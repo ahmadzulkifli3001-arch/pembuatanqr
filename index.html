@@ -1,13 +1,665 @@
-6;
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator - By Ahmad</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --success: #4CAF50;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #17a2b8;
+      --dark: #343a40;
+      --light: #f8f9fa;
+      --whatsapp: #25D366;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 15px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .header p {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      opacity: 0.9;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+      min-height: 80vh;
+    }
+
+    .main-content {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .sidebar {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 20px;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .input-section {
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    @media (min-width: 768px) {
+      .input-group {
+        flex-direction: row;
+      }
+    }
+
+    input[type="text"], input[type="url"], input[type="tel"], input[type="email"], select, textarea {
+      flex: 1;
+      padding: 12px 15px;
+      font-size: 16px; /* Prevent zoom on iOS */
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 480px) {
+      .btn {
+        width: auto;
+        margin-bottom: 0;
+      }
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
+      color: var(--dark);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, var(--whatsapp) 0%, #128C7E 100%);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, var(--info) 0%, #138496 100%);
+    }
+
+    .qr-display-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .qr-container {
+      position: relative;
+      display: inline-block;
+      margin: 15px 0;
+      max-width: 100%;
+    }
+
+    #qrcode {
+      border-radius: 20px;
+      background: white;
+      padding: 10px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .qr-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .logo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .section h3 {
+      margin-bottom: 15px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+    }
+
+    .section h3 i {
+      color: var(--primary);
+    }
+
+    .option-group {
+      margin: 15px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    input[type="color"], input[type="range"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .file-upload {
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .file-upload:hover {
+      border-color: var(--primary);
+      background: #f0f2ff;
+    }
+
+    .logo-preview {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .logo-preview img {
+      max-width: 120px;
+      max-height: 120px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .logo-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .logo-size-control {
+      flex: 2;
+      min-width: 150px;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .color-option {
+      width: 100%;
+      height: 35px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .color-option:hover {
+      transform: scale(1.05);
+    }
+
+    .color-option.active {
+      border-color: var(--dark);
+    }
+
+    .template-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    @media (min-width: 480px) {
+      .template-gallery {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .template-item {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .template-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .template-item.active {
+      border-color: var(--primary);
+      background: #f0f2ff;
+    }
+
+    .template-preview {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .template-preview {
+        width: 70px;
+        height: 70px;
+      }
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    .history-item:hover {
+      background: #f8f9fa;
+    }
+
+    .history-qr {
+      width: 35px;
+      height: 35px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .history-info {
+      flex: 1;
+      min-width: 0; /* Untuk ellipsis */
+    }
+
+    .history-url {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.9rem;
+    }
+
+    .history-date {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .tab-container {
+      margin-top: 15px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e0e0e0;
+      margin-bottom: 15px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .whatsapp-preview {
+      background: var(--whatsapp);
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .whatsapp-preview i {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .border-controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    @media (min-width: 480px) {
+      .border-controls {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .border-preview {
+      width: 100%;
+      height: 50px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      font-size: 0.9rem;
+    }
+
+    .logo-edit-controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    @media (min-width: 480px) {
+      .logo-edit-controls {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .logo-edit-controls .option-group {
+      margin: 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .action-buttons .btn {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    /* Desktop Layout */
+    @media (min-width: 992px) {
+      body {
+        padding: 20px;
+      }
+      
+      .app-container {
+        flex-direction: row;
+        min-height: 70vh;
+      }
+      
+      .main-content {
+        flex: 2;
+        padding: 30px;
+      }
+      
+      .sidebar {
+        flex: 1;
+        max-width: 400px;
+        border-top: none;
+        border-left: 1px solid #dee2e6;
+        padding: 30px;
       }
       
       .input-group {
-        flex-direction: column;
+        margin-bottom: 20px;
       }
       
-      .border-controls,
-      .logo-edit-controls {
+      .section {
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+      
+      .qr-display-section {
+        margin: 30px 0;
+      }
+      
+      .header {
+        margin-bottom: 30px;
+      }
+    }
+
+    /* Very small devices */
+    @media (max-width: 360px) {
+      body {
+        padding: 10px;
+      }
+      
+      .main-content, .sidebar {
+        padding: 15px;
+      }
+      
+      .section {
+        padding: 15px;
+      }
+      
+      .template-gallery {
         grid-template-columns: 1fr;
+      }
+      
+      .action-buttons .btn {
+        min-width: 100%;
+      }
+    }
+
+    /* Touch device improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .btn:hover {
+        transform: none;
+      }
+      
+      .template-item:hover {
+        transform: none;
+      }
+      
+      .color-option:hover {
+        transform: none;
+      }
+    }
+
+    /* High DPI screens */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .header h1 {
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      
+      .app-container {
+        box-shadow: none !important;
+      }
+      
+      .sidebar, .btn, .tabs, .file-upload {
+        display: none !important;
       }
     }
   </style>
@@ -63,9 +715,9 @@
             </div>
           </div>
 
-          <div style="margin-top: 20px;">
+          <div class="action-buttons">
             <button class="btn btn-success" onclick="downloadQR()" id="downloadBtn" style="display: none;">
-              <i class="fas fa-download"></i> Download QR Code
+              <i class="fas fa-download"></i> Download
             </button>
             <button class="btn" onclick="shareQR()" id="shareBtn" style="display: none;">
               <i class="fas fa-share-alt"></i> Share
@@ -251,7 +903,18 @@
       setupEventListeners();
       ubahTipeQR();
       updateBorderPreview();
+      
+      // Adjust QR code size for mobile
+      adjustQRSizeForMobile();
+      window.addEventListener('resize', adjustQRSizeForMobile);
     });
+
+    function adjustQRSizeForMobile() {
+      if (window.innerWidth < 768) {
+        document.getElementById('qrSizeSlider').value = 200;
+        document.getElementById('qrSizeValue').textContent = '200';
+      }
+    }
 
     function setupEventListeners() {
       document.getElementById('link').addEventListener('keypress', function(e) {
@@ -330,12 +993,21 @@
       });
 
       setTimeout(() => {
-        document.getElementById('downloadBtn').style.display = 'inline-block';
-        document.getElementById('shareBtn').style.display = 'inline-block';
-        document.getElementById('saveBtn').style.display = 'inline-block';
+        document.getElementById('downloadBtn').style.display = 'inline-flex';
+        document.getElementById('shareBtn').style.display = 'inline-flex';
+        document.getElementById('saveBtn').style.display = 'inline-flex';
         updateLogoPosition();
         updateStats();
         ubahBorder(); // Apply border styling
+        
+        // Scroll to QR code on mobile
+        if (window.innerWidth < 768) {
+          document.querySelector('.qr-display-section').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest' 
+          });
+        }
+        
         alert('QR code berhasil dibuat!');
         
         if (qrType === 'whatsapp') {
@@ -463,11 +1135,19 @@
       document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.remove('active');
       });
-      document.querySelector(`.tab:nth-child(${['customize', 'history'].indexOf(tabName) + 1})`).classList.add('active');
-
       document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
       });
+      
+      // Find and activate the correct tab
+      const tabs = document.querySelectorAll('.tab');
+      for (let i = 0; i < tabs.length; i++) {
+        if (tabs[i].textContent.includes(tabName === 'customize' ? 'Kustomisasi' : 'Riwayat')) {
+          tabs[i].classList.add('active');
+          break;
+        }
+      }
+      
       document.getElementById(tabName).classList.add('active');
     }
 
@@ -945,7 +1625,7 @@
       historyList.innerHTML = qrHistory.map(item => `
         <div class="history-item" onclick="loadFromHistory(${item.id})">
           <div class="history-qr">
-            <img src="${item.dataURL}" width="40" height="40" style="border-radius: 5px;">
+            <img src="${item.dataURL}" width="35" height="35" style="border-radius: 5px;">
           </div>
           <div class="history-info">
             <div class="history-url">${item.content}</div>
@@ -994,7 +1674,14 @@
       }
       
       document.getElementById('link').value = item.content;
-      document.getElementById('qrType').value = item.type.toLowerCase();
+      // Find the correct option in the dropdown
+      const qrTypeSelect = document.getElementById('qrType');
+      for (let i = 0; i < qrTypeSelect.options.length; i++) {
+        if (qrTypeSelect.options[i].text === item.type) {
+          qrTypeSelect.selectedIndex = i;
+          break;
+        }
+      }
       ubahTipeQR();
       buatQR();
       
@@ -1023,9 +1710,8 @@
       }
       
       const qrType = document.getElementById('qrType');
-      document.getElementById('qrTypeLabel').textContent = qrType.options[qrType.selectedIndex].text;
+      document.getElementById('statType').textContent = qrType.options[qrType.selectedIndex].text;
     }
   </script>
 </body>
-</html>
-
+                    </html>
