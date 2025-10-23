@@ -2,23 +2,15 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator & Scanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QR Code Generator</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #667eea;
       --secondary: #764ba2;
-      --success: #4CAF50;
-      --danger: #dc3545;
-      --warning: #ffc107;
-      --info: #17a2b8;
-      --dark: #2d3748;
-      --light: #f8f9fa;
-      --whatsapp: #25D366;
       --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
@@ -32,13 +24,11 @@
       font-family: 'Poppins', sans-serif;
       background: var(--gradient);
       min-height: 100vh;
-      padding: 15px;
-      color: var(--dark);
-      line-height: 1.6;
+      padding: 20px 10px;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 500px;
       margin: 0 auto;
     }
 
@@ -46,207 +36,104 @@
       text-align: center;
       margin-bottom: 25px;
       color: white;
-      animation: fadeInDown 0.8s ease;
+      animation: fadeIn 0.6s ease;
     }
 
     .header h1 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: 2rem;
       margin-bottom: 8px;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
       font-weight: 700;
     }
 
     .header p {
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      font-size: 0.95rem;
       opacity: 0.95;
-      font-weight: 300;
     }
 
     .credit {
-      font-size: 0.75rem;
-      margin-top: 5px;
-      opacity: 0.8;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      background: rgba(255,255,255,0.2);
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
     }
 
-    .app-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
+    .card {
       background: white;
       border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-      overflow: hidden;
-      animation: slideUp 0.8s ease;
-    }
-
-    @media (min-width: 768px) {
-      .app-container {
-        grid-template-columns: 1fr 380px;
-      }
-    }
-
-    .main-content {
       padding: 25px;
-    }
-
-    .sidebar {
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-      padding: 25px;
-      border-left: none;
-    }
-
-    @media (min-width: 768px) {
-      .sidebar {
-        border-left: 1px solid #dee2e6;
-      }
-    }
-
-    .input-section {
-      margin-bottom: 25px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
     }
 
     .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
-    @media (min-width: 480px) {
-      .input-group {
-        flex-direction: row;
-      }
-    }
-
-    input[type="text"], input[type="url"], input[type="tel"], input[type="email"], select {
-      flex: 1;
-      padding: 16px 18px;
-      font-size: 16px;
+    input[type="text"], 
+    input[type="url"], 
+    input[type="tel"], 
+    input[type="email"], 
+    select {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
       border: 2px solid #e9ecef;
-      border-radius: 16px;
+      border-radius: 12px;
       outline: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      transition: 0.3s;
     }
 
     input:focus, select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     .btn {
-      padding: 16px 24px;
-      font-size: 16px;
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
       background: var(--gradient);
       color: white;
       border: none;
-      border-radius: 16px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-weight: 600;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      justify-content: center;
+      gap: 8px;
+      transition: 0.3s;
     }
 
     .btn:active {
-      transform: translateY(-1px);
+      transform: scale(0.98);
     }
 
-    .btn-success {
-      background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
-      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
+    .btn-success { background: linear-gradient(135deg, #4CAF50, #45a049); }
+    .btn-danger { background: linear-gradient(135deg, #dc3545, #c82333); }
+    .btn-warning { background: linear-gradient(135deg, #ffc107, #e0a800); color: #333; }
 
-    .btn-danger {
-      background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
-      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
-    }
-
-    .btn-warning {
-      background: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
-      color: var(--dark);
-      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-    }
-
-    .btn-whatsapp {
-      background: linear-gradient(135deg, var(--whatsapp) 0%, #128C7E 100%);
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    }
-
-    .btn-info {
-      background: linear-gradient(135deg, var(--info) 0%, #138496 100%);
-      box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-      box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-    }
-
-    .qr-display-section {
+    .qr-display {
       text-align: center;
-      margin: 30px 0;
-      animation: fadeIn 0.8s ease;
-    }
-
-    .qr-container {
-      position: relative;
-      display: inline-block;
-      margin: 20px 0;
-      animation: bounceIn 0.8s ease;
+      padding: 20px 0;
     }
 
     #qrcode {
-      border: 20px solid var(--primary);
-      border-radius: 25px;
-      box-shadow: 
-        0 15px 35px rgba(0,0,0,0.1),
-        0 5px 15px rgba(0,0,0,0.07),
-        inset 0 1px 0 rgba(255,255,255,0.5);
+      display: inline-block;
+      padding: 15px;
       background: white;
-      padding: 20px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+      border: 5px solid var(--primary);
     }
 
-    #qrcode::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      background: var(--gradient);
-      z-index: -1;
-      border-radius: 35px;
-      opacity: 0.1;
+    #qrcode canvas {
+      display: block !important;
+      width: 250px !important;
+      height: 250px !important;
     }
 
     .qr-logo {
@@ -254,20 +141,12 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background: white;
-      border-radius: 15px;
-      padding: 8px;
-      box-shadow: 
-        0 8px 25px rgba(0,0,0,0.15),
-        0 2px 8px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      animation: pulse 2s infinite;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
     }
 
     .logo-image {
@@ -277,349 +156,253 @@
       border-radius: 8px;
     }
 
-    .logo-placeholder {
-      width: 100%;
-      height: 100%;
-      background: var(--gradient);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 14px;
+    .qr-container {
+      position: relative;
+      display: inline-block;
+      margin: 15px 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.1rem;
       font-weight: bold;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .section {
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.03);
-      animation: slideInLeft 0.6s ease;
-    }
-
-    .section:nth-child(even) {
-      animation: slideInRight 0.6s ease;
-    }
-
-    .section h3 {
-      margin-bottom: 20px;
-      color: var(--dark);
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #2d3748;
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 600;
-      font-size: 1.25rem;
+      gap: 8px;
     }
 
-    .section h3 i {
+    .section-title i {
       color: var(--primary);
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 1.5rem;
     }
 
-    .option-group {
-      margin: 20px 0;
-      animation: fadeInUp 0.5s ease;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 500;
-      color: #555;
-      font-size: 0.95rem;
-    }
-
-    input[type="color"], input[type="range"], input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      font-size: 14px;
-      background: white;
-      transition: all 0.3s ease;
-    }
-
-    input[type="color"]:focus, input[type="range"]:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      height: 8px;
-      background: #e9ecef;
-      border-radius: 10px;
-      border: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
-      background: var(--gradient);
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
-
-    .file-upload {
-      background: #f8f9fa;
-      border: 3px dashed #dee2e6;
-      border-radius: 16px;
-      padding: 30px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-bottom: 15px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .file-upload::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .file-upload:hover::before {
-      opacity: 0.05;
-    }
-
-    .file-upload:hover {
-      border-color: var(--primary);
-      background: #f0f2ff;
-      transform: translateY(-2px);
-    }
-
-    .file-upload i {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      color: var(--primary);
-      display: block;
-    }
-
-    .logo-preview {
-      margin-top: 20px;
-      text-align: center;
-      animation: zoomIn 0.5s ease;
-    }
-
-    .logo-preview img {
-      max-width: 120px;
-      max-height: 120px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-      border: 3px solid white;
-    }
-
-    .logo-controls {
+    .tabs {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
+      border-bottom: 2px solid #e9ecef;
+      margin-bottom: 20px;
+      gap: 5px;
     }
 
-    @media (min-width: 480px) {
-      .logo-controls {
-        flex-direction: row;
-        align-items: center;
-      }
-    }
-
-    .logo-size-control {
-      flex: 2;
-    }
-
-    .color-palette {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .color-option {
-      width: 100%;
-      height: 45px;
-      border-radius: 12px;
+    .tab {
+      padding: 12px 20px;
       cursor: pointer;
-      border: 3px solid transparent;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+      border-bottom: 3px solid transparent;
+      transition: 0.3s;
+      font-weight: 500;
+      color: #666;
+      font-size: 0.9rem;
     }
 
-    .color-option::after {
-      content: '✓';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      color: white;
-      font-weight: bold;
-      font-size: 1.2rem;
-      transition: transform 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
     }
 
-    .color-option:hover {
-      transform: scale(1.08);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    .tab-content {
+      display: none;
     }
 
-    .color-option.active {
-      border-color: var(--dark);
-      transform: scale(1.05);
+    .tab-content.active {
+      display: block;
     }
 
-    .color-option.active::after {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .template-gallery {
+    .template-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 12px;
       margin-top: 15px;
-    }
-
-    @media (min-width: 480px) {
-      .template-gallery {
-        grid-template-columns: repeat(4, 1fr);
-      }
     }
 
     .template-item {
       border: 2px solid #e9ecef;
-      border-radius: 16px;
-      padding: 20px 15px;
+      border-radius: 12px;
+      padding: 15px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      background: white;
-      position: relative;
-      overflow: hidden;
+      transition: 0.3s;
     }
 
-    .template-item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .template-item:hover {
-      border-color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
-
-    .template-item:hover::before {
-      opacity: 0.03;
+    .template-item:active {
+      transform: scale(0.95);
     }
 
     .template-item.active {
       border-color: var(--primary);
       background: #f0f2ff;
-      transform: translateY(-2px);
     }
 
-    .template-preview {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 12px;
-      border-radius: 12px;
+    .template-icon {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 10px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5rem;
-      position: relative;
-      z-index: 1;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .stat-item {
-      background: white;
-      padding: 20px 15px;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.03);
-      transition: all 0.3s ease;
-    }
-
-    .stat-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-
-    .stat-number {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--primary);
-      margin-bottom: 5px;
-    }
-
-    .stat-label {
+    .template-name {
       font-size: 0.85rem;
-      color: #666;
       font-weight: 500;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .color-option {
+      height: 45px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .color-option.active {
+      border-color: #333;
+    }
+
+    .color-option.active::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .option-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 50px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .file-upload {
+      background: #f8f9fa;
+      border: 3px dashed #dee2e6;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .file-upload i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .file-upload-text {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .logo-preview {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .logo-preview img {
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo-controls {
+      margin-top: 15px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 10px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--gradient);
+      border-radius: 50%;
+      cursor: pointer;
     }
 
     .history-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px;
+      padding: 12px;
       border-bottom: 1px solid #f1f3f4;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border-radius: 12px;
+      border-radius: 8px;
       margin-bottom: 8px;
+      transition: 0.3s;
     }
 
-    .history-item:hover {
+    .history-item:active {
       background: #f8f9fa;
-      transform: translateX(5px);
-    }
-
-    .history-item:last-child {
-      border-bottom: none;
-    }
-
-    .history-info {
-      flex: 1;
     }
 
     .history-url {
@@ -627,1120 +410,556 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var(--dark);
+      font-size: 0.9rem;
     }
 
     .history-date {
       font-size: 0.75rem;
       color: #888;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .feature-card {
-      background: white;
-      padding: 25px 20px;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      border: 1px solid rgba(0,0,0,0.03);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    }
-
-    .feature-card:hover::before {
-      opacity: 0.03;
-    }
-
-    .feature-icon {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 15px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .feature-card h4 {
-      margin-bottom: 8px;
-      color: var(--dark);
-      font-weight: 600;
-      position: relative;
-      z-index: 1;
-    }
-
-    .feature-card p {
-      font-size: 0.85rem;
-      color: #666;
-      position: relative;
-      z-index: 1;
-    }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-      animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .tab-container {
-      margin-top: 20px;
-    }
-
-    .tabs {
-      display: flex;
-      border-bottom: 2px solid #e9ecef;
-      margin-bottom: 25px;
-      overflow-x: auto;
-    }
-
-    .tab {
-      padding: 15px 20px;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      white-space: nowrap;
-      color: #666;
-      position: relative;
-    }
-
-    .tab::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      width: 0;
-      height: 3px;
-      background: var(--primary);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateX(-50%);
-    }
-
-    .tab.active {
-      color: var(--primary);
-    }
-
-    .tab.active::after {
-      width: 100%;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .whatsapp-preview {
-      background: linear-gradient(135deg, var(--whatsapp) 0%, #128C7E 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 16px;
-      margin: 20px 0;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
-      animation: pulse 2s infinite;
-    }
-
-    .whatsapp-preview i {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    /* Scanner Styles */
-    .scanner-container {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    #scanner-video {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-    }
-
-    .scanner-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 3px solid var(--primary);
-      pointer-events: none;
-    }
-
-    .scan-frame {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 200px;
-      height: 200px;
-      border: 2px solid var(--primary);
-      background: rgba(102, 126, 234, 0.1);
-      border-radius: 12px;
-    }
-
-    .scan-line {
-      position: absolute;
-      top: 20%;
-      left: 10%;
-      width: 80%;
-      height: 3px;
-      background: var(--primary);
-      animation: scan 2s linear infinite;
-      box-shadow: 0 0 15px var(--primary);
-      border-radius: 3px;
-    }
-
-    @keyframes scan {
-      0% { top: 20%; }
-      50% { top: 80%; }
-      100% { top: 20%; }
-    }
-
-    .scan-result {
-      margin-top: 25px;
-      padding: 20px;
-      background: #f8f9fa;
-      border-radius: 16px;
-      text-align: left;
-      border: 1px solid #e9ecef;
-      animation: slideInUp 0.5s ease;
-    }
-
-    .scan-result h4 {
-      margin-bottom: 12px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .scan-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    @media (min-width: 480px) {
-      .scan-actions {
-        flex-direction: row;
-      }
-    }
-
-    .scan-actions .btn {
-      flex: 1;
-    }
-
-    .camera-select {
-      width: 100%;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      font-size: 14px;
-      background: white;
-      transition: all 0.3s ease;
-    }
-
-    .camera-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .scanner-placeholder {
-      width: 100%;
-      height: 300px;
-      background: #f8f9fa;
-      border: 3px dashed #dee2e6;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #666;
-      transition: all 0.3s ease;
-    }
-
-    .scanner-placeholder i {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-      color: #adb5bd;
-    }
-
-    .permission-info {
-      background: #fff3cd;
-      border: 1px solid #ffeaa7;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      text-align: left;
-      animation: shake 0.5s ease;
-    }
-
-    .permission-info h4 {
-      color: #856404;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .permission-info ul {
-      padding-left: 20px;
-      color: #856404;
-    }
-
-    .permission-info li {
-      margin-bottom: 5px;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes bounceIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.3);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-      70% {
-        transform: scale(0.9);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
-      }
-      70% {
-        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
-      }
-    }
-
-    @keyframes zoomIn {
-      from {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-      20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
-
-    /* Loading Animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Action Buttons */
-    .action-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 25px;
-    }
-
-    @media (min-width: 480px) {
-      .action-buttons {
-        flex-direction: row;
-        justify-content: center;
-      }
-    }
-
-    /* Toast Notifications */
     .toast-container {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1100;
-      max-width: 350px;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 1000;
     }
 
     .toast {
       background: white;
-      padding: 16px 20px;
+      padding: 12px 16px;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      border-left: 4px solid var(--primary);
-      animation: slideInRight 0.3s ease;
-      transform: translateX(400px);
-      transition: transform 0.3s ease;
+      gap: 10px;
+      animation: slideDown 0.3s ease;
     }
 
-    .toast.show {
-      transform: translateX(0);
-    }
-
-    .toast.success {
-      border-left-color: var(--success);
-    }
-
-    .toast.error {
-      border-left-color: var(--danger);
-    }
-
-    .toast.warning {
-      border-left-color: var(--warning);
-    }
-
-    .toast.info {
-      border-left-color: var(--info);
-    }
+    .toast.success { border-left: 4px solid #4CAF50; }
+    .toast.error { border-left: 4px solid #dc3545; }
+    .toast.warning { border-left: 4px solid #ffc107; }
+    .toast.info { border-left: 4px solid #17a2b8; }
 
     .toast i {
       font-size: 1.2rem;
     }
 
-    .toast.success i {
-      color: var(--success);
+    .toast.success i { color: #4CAF50; }
+    .toast.error i { color: #dc3545; }
+    .toast.warning i { color: #ffc107; }
+    .toast.info i { color: #17a2b8; }
+
+    .about-section {
+      text-align: center;
+      padding: 20px;
     }
 
-    .toast.error i {
-      color: var(--danger);
+    .about-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 15px;
     }
 
-    .toast.warning i {
-      color: var(--warning);
+    .about-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
-    .toast.info i {
-      color: var(--info);
+    .about-version {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
     }
 
-    /* Floating Action Button */
-    .fab {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 60px;
-      height: 60px;
+    .about-credit {
       background: var(--gradient);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white;
-      font-size: 1.5rem;
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-      cursor: pointer;
-      z-index: 100;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: bounce 2s infinite;
+      padding: 12px 25px;
+      border-radius: 25px;
+      display: inline-block;
+      font-weight: 600;
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
     }
 
-    .fab:hover {
-      transform: scale(1.1) rotate(90deg);
-      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-10px);
-      }
-      60% {
-        transform: translateY(-5px);
-      }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Responsive Design */
-    @media (max-width: 767px) {
-      .container {
-        padding: 10px;
-      }
-      
-      .app-container {
-        border-radius: 16px;
-      }
-      
-      .main-content, .sidebar {
-        padding: 20px;
-      }
-      
-      .section {
-        padding: 20px;
-        border-radius: 16px;
-      }
-      
-      .input-group {
-        gap: 10px;
-      }
-      
-      input[type="text"], input[type="url"], input[type="tel"], input[type="email"], select {
-        padding: 14px 16px;
-        font-size: 16px; /* Prevent zoom on iOS */
-      }
-      
-      .btn {
-        padding: 14px 20px;
-        font-size: 15px;
-      }
-      
-      .template-gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      
-      .feature-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      
-      .scan-actions {
-        flex-direction: column;
-      }
-      
-      .fab {
-        bottom: 20px;
-        right: 20px;
-        width: 55px;
-        height: 55px;
-        font-size: 1.3rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header h1 {
-        font-size: 1.6rem;
-      }
-      
-      .header p {
-        font-size: 0.9rem;
-      }
-      
-      .section h3 {
-        font-size: 1.1rem;
-      }
-      
-      .template-gallery {
-        grid-template-columns: 1fr;
-      }
-      
-      .color-palette {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .tab {
-        padding: 12px 15px;
-        font-size: 0.9rem;
-      }
-    }
-
-    /* Dark mode support */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --dark: #e2e8f0;
-        --light: #2d3748;
-      }
-      
-      body {
-        background: linear-gradient(135deg, #4c51bf 0%, #6b46c1 100%);
-      }
-      
-      .app-container, .section, .stat-item, .feature-card, .history-item, .scan-result {
-        background: #2d3748;
-        color: #e2e8f0;
-      }
-      
-      input, select, .camera-select {
-        background: #4a5568;
-        border-color: #718096;
-        color: #e2e8f0;
-      }
-      
-      .file-upload {
-        background: #4a5568;
-        border-color: #718096;
-      }
-      
-      .history-item:hover {
-        background: #4a5568;
-      }
+    @media (max-width: 400px) {
+      .card { padding: 20px; }
+      .header h1 { font-size: 1.6rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1><i class="fas fa-qrcode"></i> QR Code Generator & Scanner</h1>
-      <p>Buat dan Scan QR Code dengan mudah - Responsif & Modern</p>
-      <div class="credit">By Ahmadz • v2.0</div>
+      <h1><i class="fas fa-qrcode"></i> QR Code Generator</h1>
+      <p>Buat QR Code dengan mudah dan cepat</p>
+      <div class="credit">✨ Created by Ahmad ✨</div>
     </div>
 
-    <div class="app-container">
-      <div class="main-content">
-        <div class="section">
-          <div class="input-group">
-            <input type="url" id="link" placeholder="Masukkan URL, teks, atau data lainnya..." />
-            <button class="btn" onclick="buatQR()">
-              <i class="fas fa-bolt"></i> Generate QR
-            </button>
-          </div>
-          
-          <div class="input-group">
-            <select id="qrType" onchange="ubahTipeQR()">
-              <option value="url">URL Website</option>
-              <option value="text">Teks Biasa</option>
-              <option value="email">Email</option>
-              <option value="phone">Nomor Telepon</option>
-              <option value="sms">SMS</option>
-              <option value="wifi">Wi-Fi</option>
-              <option value="whatsapp">Kontak WA</option>
-              <option value="location">Lokasi Maps</option>
-            </select>
-            <button class="btn btn-info" onclick="bukaScanner()">
-              <i class="fas fa-camera"></i> Scan QR
-            </button>
-          </div>
+    <!-- Input Card -->
+    <div class="card">
+      <div class="input-group">
+        <input type="url" id="link" placeholder="Masukkan URL atau teks..." />
+      </div>
+      
+      <div class="input-group">
+        <select id="qrType" onchange="ubahTipeQR()">
+          <option value="url">URL Website</option>
+          <option value="text">Teks Biasa</option>
+          <option value="email">Email</option>
+          <option value="phone">Nomor Telepon</option>
+          <option value="whatsapp">WhatsApp</option>
+        </select>
+      </div>
 
-          <div id="dynamicFields"></div>
+      <button class="btn" onclick="buatQR()">
+        <i class="fas fa-bolt"></i> Generate QR Code
+      </button>
+    </div>
+
+    <!-- QR Display Card -->
+    <div class="card">
+      <div class="qr-display">
+        <div class="qr-container">
+          <div id="qrcode"></div>
+          <div class="qr-logo hidden" id="logoContainer">
+            <img id="logoImage" class="logo-image" src="" alt="Logo">
+          </div>
         </div>
-
-        <div class="qr-display-section">
-          <div class="qr-container">
-            <div id="qrcode"></div>
-            <div class="qr-logo hidden" id="logoContainer">
-              <div class="logo-placeholder" id="logoPlaceholder">
-                <i class="fas fa-image"></i>
-              </div>
-              <img id="logoImage" class="logo-image hidden" src="" alt="Logo">
-            </div>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-number" id="qrSize">250x250</div>
+            <div class="stat-label">Ukuran</div>
           </div>
-          
-          <div class="stats">
-            <div class="stat-item">
-              <div class="stat-number" id="qrSize">0x0</div>
-              <div class="stat-label">Ukuran QR</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number" id="qrTypeLabel">URL</div>
-              <div class="stat-label">Tipe QR</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number" id="qrVersion">-</div>
-              <div class="stat-label">Versi QR</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number" id="qrErrorLevel">-</div>
-              <div class="stat-label">Error Correction</div>
-            </div>
-          </div>
-
-          <div class="action-buttons">
-            <button class="btn btn-success" onclick="downloadQR()" id="downloadBtn" style="display: none;">
-              <i class="fas fa-download"></i> Download QR
-            </button>
-            <button class="btn" onclick="shareQR()" id="shareBtn" style="display: none;">
-              <i class="fas fa-share-alt"></i> Share
-            </button>
-            <button class="btn btn-warning" onclick="simpanKeHistory()" id="saveBtn" style="display: none;">
-              <i class="fas fa-save"></i> Simpan
-            </button>
-            <button class="btn btn-secondary" onclick="resetQR()" id="resetBtn" style="display: none;">
-              <i class="fas fa-redo"></i> Reset
-            </button>
+          <div class="stat-item">
+            <div class="stat-number" id="qrTypeLabel">-</div>
+            <div class="stat-label">Tipe</div>
           </div>
         </div>
 
-        <div class="section">
-          <h3><i class="fas fa-palette"></i> Template Cepat</h3>
-          <div class="template-gallery">
-            <div class="template-item" onclick="applyTemplate('social')">
-              <div class="template-preview" style="background: linear-gradient(135deg, #3b5998, #8b9dc3);">
-                <i class="fab fa-facebook-f" style="color: white;"></i>
-              </div>
-              <div>Social Media</div>
-            </div>
-            <div class="template-item" onclick="applyTemplate('business')">
-              <div class="template-preview" style="background: linear-gradient(135deg, #ff6b6b, #ffa8a8);">
-                <i class="fas fa-briefcase" style="color: white;"></i>
-              </div>
-              <div>Bisnis</div>
-            </div>
-            <div class="template-item" onclick="applyTemplate('whatsapp')">
-              <div class="template-preview" style="background: linear-gradient(135deg, #25D366, #128C7E);">
-                <i class="fab fa-whatsapp" style="color: white;"></i>
-              </div>
-              <div>WhatsApp</div>
-            </div>
-            <div class="template-item" onclick="applyTemplate('creative')">
-              <div class="template-preview" style="background: linear-gradient(135deg, #ffd93d, #fffa8a);">
-                <i class="fas fa-paint-brush" style="color: #333;"></i>
-              </div>
-              <div>Kreatif</div>
-            </div>
+        <div class="action-buttons">
+          <button class="btn btn-success hidden" onclick="downloadQR()" id="downloadBtn">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button class="btn btn-warning hidden" onclick="resetQR()" id="resetBtn">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates Card -->
+    <div class="card">
+      <div class="section-title">
+        <i class="fas fa-palette"></i> Template Cepat
+      </div>
+      <div class="template-grid">
+        <div class="template-item" onclick="applyTemplate('social')">
+          <div class="template-icon" style="background: linear-gradient(135deg, #3b5998, #8b9dc3);">
+            <i class="fab fa-facebook-f" style="color: white;"></i>
+          </div>
+          <div class="template-name">Social</div>
+        </div>
+        <div class="template-item" onclick="applyTemplate('business')">
+          <div class="template-icon" style="background: linear-gradient(135deg, #2c3e50, #34495e);">
+            <i class="fas fa-briefcase" style="color: white;"></i>
+          </div>
+          <div class="template-name">Business</div>
+        </div>
+        <div class="template-item" onclick="applyTemplate('whatsapp')">
+          <div class="template-icon" style="background: linear-gradient(135deg, #25D366, #128C7E);">
+            <i class="fab fa-whatsapp" style="color: white;"></i>
+          </div>
+          <div class="template-name">WhatsApp</div>
+        </div>
+        <div class="template-item" onclick="applyTemplate('creative')">
+          <div class="template-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+            <i class="fas fa-paint-brush" style="color: white;"></i>
+          </div>
+          <div class="template-name">Creative</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Card -->
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" onclick="bukaTab('customize')">
+          <i class="fas fa-sliders-h"></i> Kustomisasi
+        </div>
+        <div class="tab" onclick="bukaTab('history')">
+          <i class="fas fa-history"></i> Riwayat
+        </div>
+        <div class="tab" onclick="bukaTab('settings')">
+          <i class="fas fa-cog"></i> Settings
+        </div>
+      </div>
+
+      <!-- Customize Tab -->
+      <div class="tab-content active" id="customize">
+        <div class="section-title">
+          <i class="fas fa-image"></i> Logo (Opsional)
+        </div>
+        <div class="file-upload" onclick="document.getElementById('logoUpload').click()">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <div class="file-upload-text">Klik untuk upload logo</div>
+          <div style="color: #999; font-size: 0.8rem; margin-top: 5px;">PNG, JPG (Max 5MB)</div>
+        </div>
+        <input type="file" id="logoUpload" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+        
+        <div class="logo-preview hidden" id="logoPreview">
+          <img id="previewImage" src="" alt="Preview">
+        </div>
+
+        <div class="logo-controls hidden" id="logoControls">
+          <div class="option-group">
+            <label>Ukuran Logo: <span id="logoSizeValue">50</span>px</label>
+            <input type="range" id="logoSize" min="30" max="80" value="50" oninput="ubahUkuranLogo()">
+          </div>
+          <button class="btn btn-danger" onclick="hapusLogo()">
+            <i class="fas fa-trash"></i> Hapus Logo
+          </button>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <div class="section-title">
+            <i class="fas fa-paint-brush"></i> Warna
+          </div>
+          
+          <div class="option-group">
+            <label>Warna QR</label>
+            <input type="color" id="qrColor" value="#000000" onchange="ubahWarnaQR()">
+          </div>
+
+          <div class="option-group">
+            <label>Warna Background</label>
+            <input type="color" id="bgColor" value="#ffffff" onchange="ubahWarnaQR()">
+          </div>
+
+          <label>Palet Cepat</label>
+          <div class="color-palette">
+            <div class="color-option active" style="background: #000000;" onclick="pilihWarnaCepat('#000000', '#ffffff')"></div>
+            <div class="color-option" style="background: #667eea;" onclick="pilihWarnaCepat('#667eea', '#ffffff')"></div>
+            <div class="color-option" style="background: #25D366;" onclick="pilihWarnaCepat('#25D366', '#ffffff')"></div>
+            <div class="color-option" style="background: #ff6b6b;" onclick="pilihWarnaCepat('#ff6b6b', '#ffffff')"></div>
+            <div class="color-option" style="background: #ffd93d;" onclick="pilihWarnaCepat('#ffd93d', '#000000')"></div>
+            <div class="color-option" style="background: #9b59b6;" onclick="pilihWarnaCepat('#9b59b6', '#ffffff')"></div>
           </div>
         </div>
       </div>
 
-      <div class="sidebar">
-        <div class="tabs">
-          <div class="tab active" onclick="bukaTab('customize')">
-            <i class="fas fa-sliders-h"></i> Kustomisasi
-          </div>
-          <div class="tab" onclick="bukaTab('history')">
-            <i class="fas fa-history"></i> Riwayat
-          </div>
-          <div class="tab" onclick="bukaTab('scanner')">
-            <i class="fas fa-camera"></i> Scanner
-          </div>
-          <div class="tab" onclick="bukaTab('settings')">
-            <i class="fas fa-cog"></i> Settings
+      <!-- History Tab -->
+      <div class="tab-content" id="history">
+        <div class="section-title">
+          <i class="fas fa-history"></i> Riwayat QR Code
+        </div>
+        <div id="historyList">
+          <div style="text-align: center; padding: 30px; color: #999;">
+            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 10px;"></i>
+            <div>Belum ada riwayat</div>
           </div>
         </div>
+        <div class="action-buttons" style="margin-top: 15px;">
+          <button class="btn btn-danger" onclick="clearHistory()">
+            <i class="fas fa-trash"></i> Hapus
+          </button>
+          <button class="btn" style="background: linear-gradient(135deg, #6c757d, #495057);" onclick="exportHistory()">
+            <i class="fas fa-download"></i> Export
+          </button>
+        </div>
+      </div>
 
-        <div class="tab-container">
-          <!-- Kustomisasi Tab -->
-          <div id="customize" class="tab-content active">
-            <div class="section">
-              <h3><i class="fas fa-image"></i> Logo & Gambar</h3>
-              <div class="file-upload" onclick="document.getElementById('logoUpload').click()">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <div>Klik untuk Upload Logo</div>
-                <div style="font-size: 12px; color: #666;">PNG, JPG, GIF (Maks. 5MB)</div>
-              </div>
-              <input type="file" id="logoUpload" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
-              
-              <div class="logo-preview hidden" id="logoPreview">
-                <img id="previewImage" src="" alt="Logo Preview">
-                <div style="margin-top: 10px; font-size: 14px; color: #666;">Preview Logo</div>
-              </div>
+      <!-- Settings Tab -->
+      <div class="tab-content" id="settings">
+        <div class="section-title">
+          <i class="fas fa-cog"></i> Pengaturan
+        </div>
+        
+        <div class="option-group">
+          <label>Kualitas QR</label>
+          <select id="qrQuality">
+            <option value="L">Low (7%)</option>
+            <option value="M">Medium (15%)</option>
+            <option value="Q" selected>Good (25%)</option>
+            <option value="H">High (30%)</option>
+          </select>
+        </div>
 
-              <div class="logo-controls hidden" id="logoControls">
-                <div class="logo-size-control">
-                  <div class="option-group">
-                    <label>Ukuran Logo: <span id="logoSizeValue">60</span>px</label>
-                    <input type="range" id="logoSize" min="30" max="100" value="60" oninput="ubahUkuranLogo()">
-                  </div>
-                </div>
-                <button class="btn btn-danger" onclick="hapusLogo()">
-                  <i class="fas fa-trash"></i> Hapus
-                </button>
-              </div>
+        <div class="option-group">
+          <label>Format Download</label>
+          <select id="downloadFormat">
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+          </select>
+        </div>
+
+        <div class="option-group" style="display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="autoSave" checked style="width: 20px; height: 20px;">
+          <label style="margin: 0;">Auto-save ke riwayat</label>
+        </div>
+
+        <button class="btn btn-warning" onclick="resetSettings()">
+          <i class="fas fa-undo"></i> Reset Settings
+        </button>
+
+        <div style="margin-top: 30px;">
+          <div class="about-section">
+            <div class="about-icon">
+              <i class="fas fa-qrcode"></i>
             </div>
-
-            <div class="section">
-              <h3><i class="fas fa-paint-brush"></i> Warna & Desain</h3>
-              
-              <div class="option-group">
-                <label>Warna QR Code</label>
-                <input type="color" id="qrColor" value="#000000" onchange="ubahWarnaQR()">
-              </div>
-
-              <div class="option-group">
-                <label>Warna Background</label>
-                <input type="color" id="bgColor" value="#ffffff" onchange="ubahWarnaQR()">
-              </div>
-
-              <div class="option-group">
-                <label>Palet Warna Cepat</label>
-                <div class="color-palette">
-                  <div class="color-option active" style="background: #000000;" onclick="pilihWarnaCepat('#000000', '#ffffff')"></div>
-                  <div class="color-option" style="background: #667eea;" onclick="pilihWarnaCepat('#667eea', '#ffffff')"></div>
-                  <div class="color-option" style="background: #25D366;" onclick="pilihWarnaCepat('#25D366', '#ffffff')"></div>
-                  <div class="color-option" style="background: #ff6b6b;" onclick="pilihWarnaCepat('#ff6b6b', '#ffffff')"></div>
-                  <div class="color-option" style="background: #ffd93d;" onclick="pilihWarnaCepat('#ffd93d', '#000000')"></div>
-                  <div class="color-option" style="background: #6c5ce7;" onclick="pilihWarnaCepat('#6c5ce7', '#ffffff')"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section">
-              <h3><i class="fas fa-crop-alt"></i> Ukuran & Border</h3>
-              
-              <div class="option-group">
-                <label>Ukuran QR: <span id="qrSizeValue">250</span>px</label>
-                <input type="range" id="qrSizeSlider" min="150" max="500" value="250" oninput="ubahUkuranQR()">
-              </div>
-
-              <div class="option-group">
-                <label>Style Border</label>
-                <select id="borderStyle" onchange="ubahBorder()">
-                  <option value="solid">Solid</option>
-                  <option value="dashed">Dashed</option>
-                  <option value="dotted">Dotted</option>
-                  <option value="double">Double</option>
-                  <option value="groove">Groove</option>
-                  <option value="ridge">Ridge</option>
-                  <option value="none">Tidak Ada</option>
-                </select>
-              </div>
-
-              <div class="option-group">
-                <label>Warna Border</label>
-                <input type="color" id="borderColor" value="#667eea" onchange="ubahBorder()">
-              </div>
-
-              <div class="option-group">
-                <label>Lebar Border: <span id="borderWidthValue">20</span>px</label>
-                <input type="range" id="borderWidth" min="0" max="50" value="20" oninput="ubahBorder()">
-              </div>
-            </div>
-          </div>
-
-          <!-- Riwayat Tab -->
-          <div id="history" class="tab-content">
-            <div class="section">
-              <h3><i class="fas fa-history"></i> Riwayat QR Code</h3>
-              <div id="historyList">
-                <div style="text-align: center; padding: 40px 20px; color: #666;">
-                  <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                  <div>Belum ada riwayat QR Code</div>
-                  <div style="font-size: 0.85rem; margin-top: 8px;">QR Code yang Anda buat akan muncul di sini</div>
-                </div>
-              </div>
-              <div class="action-buttons">
-                <button class="btn btn-danger" onclick="clearHistory()">
-                  <i class="fas fa-trash"></i> Hapus Semua
-                </button>
-                <button class="btn btn-secondary" onclick="exportHistory()">
-                  <i class="fas fa-file-export"></i> Export
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Scanner Tab -->
-          <div id="scanner" class="tab-content">
-            <div class="section">
-              <h3><i class="fas fa-camera"></i> QR Code Scanner</h3>
-              
-              <div class="permission-info">
-                <h4><i class="fas fa-info-circle"></i> Izin Kamera Diperlukan</h4>
-                <ul>
-                  <li>Klik "Izinkan" ketika browser meminta akses kamera</li>
-                  <li>Pastikan kamera tidak sedang digunakan aplikasi lain</li>
-                  <li>Gunakan di lingkungan dengan pencahayaan cukup</li>
-                </ul>
-              </div>
-
-              <div class="option-group">
-                <label>Pilih Kamera:</label>
-                <select id="cameraSelect" class="camera-select" onchange="gantiKamera()">
-                  <option value="">Memuat kamera...</option>
-                </select>
-              </div>
-
-              <div id="scannerArea">
-                <div class="scanner-placeholder" id="scannerPlaceholder">
-                  <i class="fas fa-camera"></i>
-                  <div>Kamera siap untuk scanning</div>
-                  <div style="font-size: 12px; margin-top: 8px; opacity: 0.7;">Klik "Mulai Scan" untuk memulai</div>
-                </div>
-                <div class="scanner-container hidden" id="scannerContainer">
-                  <video id="scanner-video" muted playsinline></video>
-                  <div class="scanner-overlay">
-                    <div class="scan-frame"></div>
-                    <div class="scan-line"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="scan-result hidden" id="scanResult">
-                <h4><i class="fas fa-check-circle"></i> QR Code Terdeteksi!</h4>
-                <div id="scanResultContent" style="word-break: break-all; background: white; padding: 12px; border-radius: 8px; margin: 12px 0; border: 1px solid #e9ecef;"></div>
-                <div class="scan-actions">
-                  <button class="btn btn-success" onclick="gunakanHasilScan()">
-                    <i class="fas fa-check"></i> Gunakan
-                  </button>
-                  <button class="btn" onclick="salinHasilScan()">
-                    <i class="fas fa-copy"></i> Salin
-                  </button>
-                  <button class="btn btn-warning" onclick="resetScanner()">
-                    <i class="fas fa-redo"></i> Scan Lagi
-                  </button>
-                </div>
-              </div>
-
-              <div class="action-buttons">
-                <button class="btn btn-success" onclick="mulaiScan()" id="startScanBtn">
-                  <i class="fas fa-play"></i> Mulai Scan
-                </button>
-                <button class="btn btn-danger" onclick="berhentiScan()" id="stopScanBtn" style="display: none;">
-                  <i class="fas fa-stop"></i> Berhenti
-                </button>
-              </div>
-
-              <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #e9ecef;">
-                <h4><i class="fas fa-lightbulb"></i> Tips Scanning:</h4>
-                <ul style="text-align: left; margin-top: 12px; padding-left: 20px;">
-                  <li>Pastikan QR code dalam frame kamera</li>
-                  <li>Jaga jarak optimal 15-30 cm</li>
-                  <li>Pastikan pencahayaan cukup</li>
-                  <li>Hindari silau dan bayangan</li>
-                  <li>QR code harus dalam kondisi baik/tidak rusak</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Settings Tab -->
-          <div id="settings" class="tab-content">
-            <div class="section">
-              <h3><i class="fas fa-cog"></i> Pengaturan</h3>
-              
-              <div class="option-group">
-                <label>Kualitas QR Code</label>
-                <select id="qrQuality" onchange="ubahKualitasQR()">
-                  <option value="L">Low (7%)</option>
-                  <option value="M">Medium (15%)</option>
-                  <option value="Q" selected>Good (25%)</option>
-                  <option value="H">High (30%)</option>
-                </select>
-              </div>
-
-              <div class="option-group">
-                <label>Format Download</label>
-                <select id="downloadFormat">
-                  <option value="png">PNG (Recommended)</option>
-                  <option value="jpg">JPG</option>
-                  <option value="svg">SVG (Vector)</option>
-                </select>
-              </div>
-
-              <div class="option-group">
-                <label>Auto-save to History</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <input type="checkbox" id="autoSave" checked style="width: 20px; height: 20px;">
-                  <span>Simpan otomatis ke riwayat</span>
-                </div>
-              </div>
-
-              <div class="option-group">
-                <label>Vibrate on Scan</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <input type="checkbox" id="vibrateOnScan" checked style="width: 20px; height: 20px;">
-                  <span>Getar saat QR terdeteksi</span>
-                </div>
-              </div>
-
-              <div class="action-buttons" style="margin-top: 25px;">
-                <button class="btn btn-warning" onclick="resetSettings()">
-                  <i class="fas fa-undo"></i> Reset Settings
-                </button>
-                <button class="btn btn-info" onclick="backupData()">
-                  <i class="fas fa-download"></i> Backup Data
-                </button>
-              </div>
-            </div>
-
-            <div class="section">
-              <h3><i class="fas fa-info-circle"></i> Tentang Aplikasi</h3>
-              <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;">
-                  <i class="fas fa-qrcode"></i>
-                </div>
-                <h4 style="margin-bottom: 10px;">QR Code Generator & Scanner</h4>
-                <p style="color: #666; margin-bottom: 15px;">Versi 2.0 - Responsive Design</p>
-                <p style="font-size: 0.9rem; color: #888;">Dibuat dengan ❤️ oleh Ahmadz</p>
-                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-                  <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.8rem;">
-                    <i class="fas fa-bug"></i> Report Bug
-                  </button>
-                  <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.8rem;">
-                    <i class="fas fa-star"></i> Rate App
-                  </button>
-                </div>
-              </div>
-            </div>
+            <div class="about-title">QR Code Generator</div>
+            <div class="about-version">Versi 2.0 - Mobile Optimized</div>
+            <div class="about-credit">✨ Created by Ahmad ✨</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Floating Action Button -->
-  <div class="fab" onclick="scrollToTop()">
-    <i class="fas fa-arrow-up"></i>
-  </div>
-
-  <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    // Kode JavaScript yang sama seperti sebelumnya, tapi dengan improvements:
-    // 1. Download QR dengan border yang sesuai
-    // 2. Animasi yang lebih smooth
-    // 3. Fitur tambahan seperti reset, export history, dll.
-    // 4. Error handling yang lebih baik
+    let currentQRCode = null;
+    let currentLogo = null;
+    let logoSize = 50;
+    let qrHistory = JSON.parse(localStorage.getItem('qrHistory')) || [];
 
-    // ... (JavaScript code from previous implementation with enhancements)
+    document.addEventListener('DOMContentLoaded', function() {
+      loadHistory();
+      showNotification('Selamat datang! 👋', 'info');
+    });
 
-    // Enhanced downloadQR function with border support
+    function buatQR() {
+      const input = document.getElementById('link').value.trim();
+      const qrType = document.getElementById('qrType').value;
+      
+      if (!input) {
+        showNotification('Masukkan data terlebih dahulu!', 'warning');
+        return;
+      }
+
+      let qrData = formatQRContent(input, qrType);
+      if (!qrData) return;
+
+      const container = document.getElementById('qrcode');
+      container.innerHTML = '';
+
+      const qrColor = document.getElementById('qrColor').value;
+      const bgColor = document.getElementById('bgColor').value;
+      const qrQuality = document.getElementById('qrQuality').value;
+
+      try {
+        currentQRCode = new QRCode(container, {
+          text: qrData,
+          width: 250,
+          height: 250,
+          colorDark: qrColor,
+          colorLight: bgColor,
+          correctLevel: QRCode.CorrectLevel[qrQuality]
+        });
+
+        setTimeout(() => {
+          document.getElementById('downloadBtn').classList.remove('hidden');
+          document.getElementById('resetBtn').classList.remove('hidden');
+          updateStats();
+          
+          if (currentLogo) {
+            document.getElementById('logoContainer').classList.remove('hidden');
+          }
+          
+          if (document.getElementById('autoSave').checked) {
+            simpanKeHistory();
+          }
+          
+          showNotification('QR Code berhasil dibuat! ✨', 'success');
+        }, 300);
+
+      } catch (error) {
+        showNotification('Gagal membuat QR code', 'error');
+      }
+    }
+
+    function formatQRContent(content, type) {
+      switch(type) {
+        case 'url':
+          if (!content.startsWith('http://') && !content.startsWith('https://')) {
+            content = 'https://' + content;
+          }
+          return content;
+        
+        case 'email':
+          if (!content.includes('@')) {
+            showNotification('Email tidak valid!', 'error');
+            return null;
+          }
+          return `mailto:${content}`;
+        
+        case 'phone':
+          const cleaned = content.replace(/\D/g, '');
+          if (cleaned.length < 8) {
+            showNotification('Nomor telepon tidak valid!', 'error');
+            return null;
+          }
+          return `tel:${cleaned}`;
+        
+        case 'whatsapp':
+          const phone = content.replace(/\D/g, '');
+          if (phone.length < 8) {
+            showNotification('Nomor WhatsApp tidak valid!', 'error');
+            return null;
+          }
+          const formattedPhone = phone.startsWith('0') ? '62' + phone.substring(1) : phone;
+          return `https://wa.me/${formattedPhone}`;
+        
+        case 'text':
+        default:
+          return content;
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('qrSize').textContent = '250x250';
+      const typeLabel = document.getElementById('qrType').options[document.getElementById('qrType').selectedIndex].text;
+      document.getElementById('qrTypeLabel').textContent = typeLabel;
+    }
+
+    function ubahTipeQR() {
+      const type = document.getElementById('qrType').value;
+      const input = document.getElementById('link');
+      
+      switch(type) {
+        case 'url':
+          input.placeholder = 'Masukkan URL (contoh: google.com)';
+          break;
+        case 'email':
+          input.placeholder = 'Masukkan email (contoh: user@email.com)';
+          break;
+        case 'phone':
+          input.placeholder = 'Masukkan nomor telepon';
+          break;
+        case 'whatsapp':
+          input.placeholder = 'Nomor WhatsApp (contoh: 08123456789)';
+          break;
+        case 'text':
+          input.placeholder = 'Masukkan teks bebas...';
+          break;
+      }
+    }
+
+    function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        showNotification('File terlalu besar! Max 5MB', 'error');
+        return;
+      }
+
+      if (!file.type.match('image.*')) {
+        showNotification('Hanya file gambar yang diperbolehkan', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentLogo = e.target.result;
+        document.getElementById('previewImage').src = currentLogo;
+        document.getElementById('logoImage').src = currentLogo;
+        document.getElementById('logoPreview').classList.remove('hidden');
+        document.getElementById('logoControls').classList.remove('hidden');
+        
+        if (currentQRCode) {
+          document.getElementById('logoContainer').classList.remove('hidden');
+        }
+        
+        showNotification('Logo berhasil diupload! 📸', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function ubahUkuranLogo() {
+      logoSize = parseInt(document.getElementById('logoSize').value);
+      document.getElementById('logoSizeValue').textContent = logoSize;
+      const logoContainer = document.getElementById('logoContainer');
+      if (logoContainer) {
+        logoContainer.style.width = logoSize + 'px';
+        logoContainer.style.height = logoSize + 'px';
+      }
+    }
+
+    function hapusLogo() {
+      currentLogo = null;
+      document.getElementById('logoUpload').value = '';
+      document.getElementById('logoPreview').classList.add('hidden');
+      document.getElementById('logoControls').classList.add('hidden');
+      document.getElementById('logoContainer').classList.add('hidden');
+      showNotification('Logo dihapus', 'info');
+    }
+
+    function ubahWarnaQR() {
+      if (currentQRCode) {
+        buatQR();
+      }
+    }
+
+    function pilihWarnaCepat(qrColor, bgColor) {
+      document.getElementById('qrColor').value = qrColor;
+      document.getElementById('bgColor').value = bgColor;
+      
+      document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      if (currentQRCode) {
+        buatQR();
+      }
+    }
+
+    function applyTemplate(templateName) {
+      const templates = {
+        social: { qrColor: '#3b5998', bgColor: '#ffffff' },
+        business: { qrColor: '#2c3e50', bgColor: '#ffffff' },
+        whatsapp: { qrColor: '#25D366', bgColor: '#ffffff', type: 'whatsapp' },
+        creative: { qrColor: '#9b59b6', bgColor: '#ffffff' }
+      };
+      
+      const template = templates[templateName];
+      document.getElementById('qrColor').value = template.qrColor;
+      document.getElementById('bgColor').value = template.bgColor;
+      
+      if (template.type) {
+        document.getElementById('qrType').value = template.type;
+        ubahTipeQR();
+      }
+      
+      document.querySelectorAll('.template-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.target.closest('.template-item').classList.add('active');
+      
+      if (currentQRCode) {
+        buatQR();
+      }
+      
+      showNotification(`Template ${templateName} diterapkan! 🎨`, 'success');
+    }
+
     function downloadQR() {
       if (!currentQRCode) {
         showNotification('Buat QR Code terlebih dahulu!', 'warning');
@@ -1748,109 +967,130 @@
       }
 
       const canvas = document.querySelector('#qrcode canvas');
-      if (!canvas) {
-        showNotification('QR Code belum siap untuk didownload!', 'error');
-        return;
-      }
+      if (!canvas) return;
 
       try {
         const finalCanvas = document.createElement('canvas');
         const ctx = finalCanvas.getContext('2d');
-        const size = 500; // Increased size for better quality
-        const borderStyle = document.getElementById('borderStyle').value;
-        const borderColor = document.getElementById('borderColor').value;
-        const borderWidth = parseInt(document.getElementById('borderWidth').value);
-        const format = document.getElementById('downloadFormat').value;
+        const size = 600;
 
         finalCanvas.width = size;
         finalCanvas.height = size;
 
-        // Draw background
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, size, size);
 
-        // Draw border if enabled
-        if (borderStyle !== 'none' && borderWidth > 0) {
-          ctx.fillStyle = borderColor;
-          ctx.fillRect(0, 0, size, size);
-          
-          // Draw inner white background
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(borderWidth, borderWidth, size - borderWidth * 2, size - borderWidth * 2);
-        }
+        const padding = 50;
+        const qrSize = size - (padding * 2);
+        
+        ctx.drawImage(canvas, padding, padding, qrSize, qrSize);
 
-        // Calculate QR code position and size
-        const qrSize = size - (borderWidth * 2) - 40; // 20px padding on each side
-        const qrX = borderWidth + 20;
-        const qrY = borderWidth + 20;
-
-        // Draw QR code
-        ctx.drawImage(canvas, qrX, qrY, qrSize, qrSize);
-
-        // Draw logo if exists
         if (currentLogo) {
           const logoImg = new Image();
           logoImg.onload = function() {
-            const logoSizeFinal = logoSize * (qrSize / 250); // Scale logo based on QR size
-            const logoX = size / 2 - logoSizeFinal / 2;
-            const logoY = size / 2 - logoSizeFinal / 2;
+            const logoSizeFinal = logoSize * 2;
+            const logoX = (size - logoSizeFinal) / 2;
+            const logoY = (size - logoSizeFinal) / 2;
             
-            // Draw white background for logo
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(logoX - 4, logoY - 4, logoSizeFinal + 8, logoSizeFinal + 8);
-            
-            // Draw logo
+            ctx.fillRect(logoX - 5, logoY - 5, logoSizeFinal + 10, logoSizeFinal + 10);
             ctx.drawImage(logoImg, logoX, logoY, logoSizeFinal, logoSizeFinal);
             
-            doDownload(finalCanvas, format);
+            doDownload(finalCanvas);
           };
           logoImg.src = currentLogo;
         } else {
-          doDownload(finalCanvas, format);
+          doDownload(finalCanvas);
         }
       } catch (error) {
-        console.error('Error downloading QR code:', error);
-        showNotification('Terjadi error saat mendownload QR code.', 'error');
+        showNotification('Gagal mendownload QR code', 'error');
       }
     }
 
-    function doDownload(canvas, format) {
+    function doDownload(canvas) {
+      const format = document.getElementById('downloadFormat').value;
       const link = document.createElement('a');
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+      const timestamp = new Date().toISOString().slice(0, 10);
       
-      let mimeType, extension;
-      switch(format) {
-        case 'jpg':
-          mimeType = 'image/jpeg';
-          extension = 'jpg';
-          break;
-        case 'svg':
-          // SVG download would require different implementation
-          mimeType = 'image/svg+xml';
-          extension = 'svg';
-          break;
-        default:
-          mimeType = 'image/png';
-          extension = 'png';
-      }
-      
-      link.download = `qrcode-${timestamp}.${extension}`;
-      link.href = canvas.toDataURL(mimeType);
+      link.download = `qrcode-${timestamp}.${format}`;
+      link.href = canvas.toDataURL(`image/${format}`, 1.0);
       link.click();
-      showNotification(`QR Code berhasil didownload sebagai ${extension.toUpperCase()}!`, 'success');
+      
+      showNotification('QR Code berhasil didownload! 📥', 'success');
     }
 
-    // New feature: Reset QR
-    function resetQR() {
-      document.getElementById('qrcode').innerHTML = '';
-      document.getElementById('downloadBtn').style.display = 'none';
-      document.getElementById('shareBtn').style.display = 'none';
-      document.getElementById('saveBtn').style.display = 'none';
-      document.getElementById('resetBtn').style.display = 'none';
-      showNotification('QR Code telah direset', 'info');
+    function simpanKeHistory() {
+      if (!currentQRCode) return;
+
+      const item = {
+        id: Date.now(),
+        content: document.getElementById('link').value,
+        type: document.getElementById('qrType').value,
+        timestamp: new Date().toLocaleString('id-ID')
+      };
+
+      const isDuplicate = qrHistory.some(h => h.content === item.content);
+      
+      if (!isDuplicate) {
+        qrHistory.unshift(item);
+        if (qrHistory.length > 30) {
+          qrHistory = qrHistory.slice(0, 30);
+        }
+        localStorage.setItem('qrHistory', JSON.stringify(qrHistory));
+        loadHistory();
+      }
     }
 
-    // New feature: Export history
+    function loadHistory() {
+      const historyList = document.getElementById('historyList');
+      
+      if (qrHistory.length === 0) {
+        historyList.innerHTML = `
+          <div style="text-align: center; padding: 30px; color: #999;">
+            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 10px;"></i>
+            <div>Belum ada riwayat</div>
+          </div>
+        `;
+        return;
+      }
+
+      historyList.innerHTML = qrHistory.map(item => `
+        <div class="history-item" onclick="loadFromHistory(${item.id})">
+          <div style="flex: 1;">
+            <div class="history-url">${item.content}</div>
+            <div class="history-date">${item.timestamp}</div>
+          </div>
+          <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+        </div>
+      `).join('');
+    }
+
+    function loadFromHistory(id) {
+      const item = qrHistory.find(h => h.id === id);
+      if (!item) return;
+
+      document.getElementById('link').value = item.content;
+      document.getElementById('qrType').value = item.type;
+      ubahTipeQR();
+      buatQR();
+      bukaTab('customize');
+      showNotification('Riwayat dimuat! 📋', 'success');
+    }
+
+    function clearHistory() {
+      if (qrHistory.length === 0) {
+        showNotification('Tidak ada riwayat untuk dihapus', 'info');
+        return;
+      }
+
+      if (confirm('Hapus semua riwayat?')) {
+        qrHistory = [];
+        localStorage.setItem('qrHistory', JSON.stringify(qrHistory));
+        loadHistory();
+        showNotification('Riwayat dihapus! 🗑️', 'success');
+      }
+    }
+
     function exportHistory() {
       if (qrHistory.length === 0) {
         showNotification('Tidak ada riwayat untuk diexport', 'warning');
@@ -1863,18 +1103,41 @@
       link.href = URL.createObjectURL(dataBlob);
       link.download = `qr-history-${new Date().toISOString().slice(0, 10)}.json`;
       link.click();
-      showNotification('Riwayat berhasil diexport!', 'success');
+      showNotification('Riwayat berhasil diexport! 📤', 'success');
     }
 
-    // New feature: Scroll to top
-    function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    function bukaTab(tabName) {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
       });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      event.target.classList.add('active');
+      document.getElementById(tabName).classList.add('active');
     }
 
-    // Enhanced notification system
+    function resetQR() {
+      document.getElementById('qrcode').innerHTML = '';
+      document.getElementById('downloadBtn').classList.add('hidden');
+      document.getElementById('resetBtn').classList.add('hidden');
+      document.getElementById('link').value = '';
+      currentQRCode = null;
+      showNotification('QR Code direset', 'info');
+    }
+
+    function resetSettings() {
+      if (confirm('Reset semua pengaturan?')) {
+        document.getElementById('qrQuality').value = 'Q';
+        document.getElementById('downloadFormat').value = 'png';
+        document.getElementById('autoSave').checked = true;
+        document.getElementById('qrColor').value = '#000000';
+        document.getElementById('bgColor').value = '#ffffff';
+        showNotification('Pengaturan direset! 🔄', 'success');
+      }
+    }
+
     function showNotification(message, type = 'info') {
       const toastContainer = document.getElementById('toastContainer');
       const toast = document.createElement('div');
@@ -1894,1568 +1157,36 @@
       
       toastContainer.appendChild(toast);
       
-      // Trigger animation
-      setTimeout(() => toast.classList.add('show'), 100);
-      
-      // Auto remove after 5 seconds
       setTimeout(() => {
-        toast.classList.remove('show');
+        toast.style.animation = 'slideDown 0.3s ease reverse';
         setTimeout(() => {
           if (toast.parentNode) {
             toast.parentNode.removeChild(toast);
           }
         }, 300);
-      }, 5000);
+      }, 3000);
     }
 
-    // Add scroll event for FAB visibility
-    window.addEventListener('scroll', function() {
-      const fab = document.querySelector('.fab');
-      if (window.scrollY > 300) {
-        fab.style.display = 'flex';
-      } else {
-        fab.style.display = 'none';
+    document.getElementById('link').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        buatQR();
       }
     });
 
-    // Initialize with hidden FAB
-    document.querySelector('.fab').style.display = 'none';
-
-    // ... (rest of the JavaScript code from previous implementation)
-
-    // State management
-    let currentQRCode = null;
-    let currentLogo = null;
-    let logoSize = 60;
-    let qrHistory = JSON.parse(localStorage.getItem('qrHistory')) || [];
-    let appSettings = JSON.parse(localStorage.getItem('qrAppSettings')) || {
-        autoSave: true,
-        vibrateOnScan: true,
-        qrQuality: 'Q',
-        downloadFormat: 'png'
-    };
-    
-    // Scanner variables
-    let scannerStream = null;
-    let scannerActive = false;
-    let scanInterval = null;
-    let currentCamera = null;
-
-    // Initialize app
-    document.addEventListener('DOMContentLoaded', function() {
-        initializeApp();
+    document.getElementById('qrQuality').addEventListener('change', function() {
+      if (currentQRCode) buatQR();
     });
 
-    function initializeApp() {
-        loadSettings();
-        loadHistory();
-        updateStats();
-        setupEventListeners();
-        ubahTipeQR();
-        loadCameras();
-        checkPermissions();
-        
-        // Show welcome message
-        setTimeout(() => {
-            showNotification('Selamat datang di QR Code Generator & Scanner!', 'info');
-        }, 1000);
-    }
-
-    function loadSettings() {
-        // Apply saved settings
-        document.getElementById('autoSave').checked = appSettings.autoSave;
-        document.getElementById('vibrateOnScan').checked = appSettings.vibrateOnScan;
-        document.getElementById('qrQuality').value = appSettings.qrQuality;
-        document.getElementById('downloadFormat').value = appSettings.downloadFormat;
-    }
-
-    function saveSettings() {
-        appSettings.autoSave = document.getElementById('autoSave').checked;
-        appSettings.vibrateOnScan = document.getElementById('vibrateOnScan').checked;
-        appSettings.qrQuality = document.getElementById('qrQuality').value;
-        appSettings.downloadFormat = document.getElementById('downloadFormat').value;
-        
-        localStorage.setItem('qrAppSettings', JSON.stringify(appSettings));
-        showNotification('Pengaturan disimpan!', 'success');
-    }
-
-    function setupEventListeners() {
-        // Enter key untuk generate QR
-        document.getElementById('link').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') buatQR();
-        });
-
-        // Auto-save settings changes
-        document.getElementById('autoSave').addEventListener('change', saveSettings);
-        document.getElementById('vibrateOnScan').addEventListener('change', saveSettings);
-        document.getElementById('qrQuality').addEventListener('change', saveSettings);
-        document.getElementById('downloadFormat').addEventListener('change', saveSettings);
-
-        // Drag and drop untuk logo
-        setupDragAndDrop();
-
-        // Scroll to top FAB
-        window.addEventListener('scroll', function() {
-            const fab = document.querySelector('.fab');
-            if (window.scrollY > 300) {
-                fab.style.display = 'flex';
-            } else {
-                fab.style.display = 'none';
-            }
-        });
-
-        // Handle page visibility changes (pause scanner when tab not active)
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden && scannerActive) {
-                berhentiScan();
-                showNotification('Scanner dijeda karena tab tidak aktif', 'info');
-            }
-        });
-    }
-
-    // QR Code Generation Functions
-    function buatQR() {
-        const container = document.getElementById('qrcode');
-        const qrType = document.getElementById('qrType').value;
-        
-        let qrContent = '';
-        
-        // Validasi input berdasarkan tipe
-        if (qrType === 'whatsapp') {
-            const phone = document.getElementById('whatsappPhone').value.trim();
-            const message = document.getElementById('whatsappMessage').value.trim();
-            
-            if (!phone) {
-                showNotification('Silakan masukkan nomor WhatsApp!', 'warning');
-                return;
-            }
-            
-            // Format nomor WhatsApp
-            const formattedPhone = formatPhoneNumber(phone);
-            if (!formattedPhone) {
-                showNotification('Format nomor WhatsApp tidak valid!', 'error');
-                return;
-            }
-            
-            qrContent = `https://wa.me/${formattedPhone}`;
-            
-            if (message) {
-                qrContent += `?text=${encodeURIComponent(message)}`;
-            }
-        } else if (qrType === 'location') {
-            const lat = document.getElementById('locationLat').value.trim();
-            const lng = document.getElementById('locationLng').value.trim();
-            const label = document.getElementById('locationLabel').value.trim();
-            
-            if (!lat || !lng) {
-                showNotification('Silakan masukkan koordinat latitude dan longitude!', 'warning');
-                return;
-            }
-            
-            if (label) {
-                qrContent = `geo:${lat},${lng}?q=${encodeURIComponent(label)}`;
-            } else {
-                qrContent = `geo:${lat},${lng}`;
-            }
-        } else {
-            const linkInput = document.getElementById('link');
-            qrContent = linkInput.value.trim();
-            
-            if (!qrContent) {
-                showNotification('Silakan masukkan konten untuk QR code!', 'warning');
-                return;
-            }
-
-            qrContent = formatQRContent(qrContent, qrType);
-            if (!qrContent) return;
-        }
-
-        container.innerHTML = '';
-
-        const qrColor = document.getElementById('qrColor').value;
-        const bgColor = document.getElementById('bgColor').value;
-        const qrSize = parseInt(document.getElementById('qrSizeSlider').value);
-        const qrQuality = document.getElementById('qrQuality').value;
-
-        try {
-            currentQRCode = new QRCode(container, {
-                text: qrContent,
-                width: qrSize,
-                height: qrSize,
-                colorDark: qrColor,
-                colorLight: bgColor,
-                correctLevel: QRCode.CorrectLevel[qrQuality]
-            });
-
-            // Update UI setelah QR dibuat
-            setTimeout(() => {
-                document.getElementById('downloadBtn').style.display = 'inline-block';
-                document.getElementById('shareBtn').style.display = 'inline-block';
-                document.getElementById('saveBtn').style.display = 'inline-block';
-                document.getElementById('resetBtn').style.display = 'inline-block';
-                updateLogoPosition();
-                updateStats();
-                showNotification('QR code berhasil dibuat!', 'success');
-                
-                // Auto-save ke history jika diaktifkan
-                if (appSettings.autoSave) {
-                    setTimeout(() => simpanKeHistory(), 500);
-                }
-                
-                if (qrType === 'whatsapp') {
-                    showWhatsAppPreview();
-                }
-            }, 300);
-
-        } catch (error) {
-            console.error('Error creating QR code:', error);
-            showNotification('Terjadi error saat membuat QR code: ' + error.message, 'error');
-        }
-    }
-
-    function formatPhoneNumber(phone) {
-        // Hapus semua karakter non-digit
-        const cleaned = phone.replace(/\D/g, '');
-        
-        // Validasi panjang nomor
-        if (cleaned.length < 8 || cleaned.length > 15) {
-            return null;
-        }
-        
-        // Jika diawali dengan 0, ganti dengan 62 (kode Indonesia)
-        if (cleaned.startsWith('0')) {
-            return '62' + cleaned.substring(1);
-        }
-        
-        // Jika diawali dengan +, hapus +
-        if (cleaned.startsWith('+')) {
-            return cleaned.substring(1);
-        }
-        
-        return cleaned;
-    }
-
-    function formatQRContent(content, type) {
-        switch(type) {
-            case 'url':
-                if (!content.startsWith('http://') && !content.startsWith('https://')) {
-                    content = 'https://' + content;
-                }
-                // Validasi URL
-                try {
-                    new URL(content);
-                    return content;
-                } catch {
-                    showNotification('Format URL tidak valid!', 'error');
-                    return null;
-                }
-            
-            case 'email':
-                // Validasi email sederhana
-                if (!content.includes('@') || !content.includes('.')) {
-                    showNotification('Format email tidak valid!', 'error');
-                    return null;
-                }
-                return `mailto:${content}`;
-            
-            case 'phone':
-                const formattedPhone = formatPhoneNumber(content);
-                if (!formattedPhone) {
-                    showNotification('Format nomor telepon tidak valid!', 'error');
-                    return null;
-                }
-                return `tel:${formattedPhone}`;
-            
-            case 'sms':
-                const formattedSMS = formatPhoneNumber(content);
-                if (!formattedSMS) {
-                    showNotification('Format nomor SMS tidak valid!', 'error');
-                    return null;
-                }
-                return `sms:${formattedSMS}`;
-            
-            case 'wifi':
-                const password = document.getElementById('wifiPassword')?.value || '';
-                const encryption = document.getElementById('wifiEncryption')?.value || 'WPA';
-                if (encryption === 'nopass') {
-                    return `WIFI:S:${content};T:nopass;;`;
-                } else {
-                    if (!password) {
-                        showNotification('Password WiFi diperlukan untuk enkripsi WPA/WEP!', 'warning');
-                        return null;
-                    }
-                    return `WIFI:S:${content};T:${encryption};P:${password};;`;
-                }
-            
-            case 'text':
-                return content;
-            
-            default:
-                return content;
-        }
-    }
-
-    function updateStats() {
-        const canvas = document.querySelector('#qrcode canvas');
-        if (canvas) {
-            document.getElementById('qrSize').textContent = `${canvas.width}x${canvas.height}`;
-            
-            // Hitung versi QR code (estimasi sederhana)
-            const version = Math.ceil(canvas.width / 21);
-            document.getElementById('qrVersion').textContent = `v${version}`;
-            
-            // Tampilkan level error correction
-            const quality = document.getElementById('qrQuality').value;
-            const qualityLabels = {
-                'L': 'Low (7%)',
-                'M': 'Medium (15%)',
-                'Q': 'Good (25%)',
-                'H': 'High (30%)'
-            };
-            document.getElementById('qrErrorLevel').textContent = qualityLabels[quality];
-        }
-        document.getElementById('qrTypeLabel').textContent = 
-            document.getElementById('qrType').options[document.getElementById('qrType').selectedIndex].text;
-    }
-
-    // Scanner Functions
-    async function loadCameras() {
-        try {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-                showNotification('Browser tidak mendukung akses kamera', 'error');
-                return;
-            }
-
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-            const cameraSelect = document.getElementById('cameraSelect');
-            
-            cameraSelect.innerHTML = '<option value="">Pilih Kamera...</option>';
-            
-            if (videoDevices.length === 0) {
-                cameraSelect.innerHTML = '<option value="">Tidak ada kamera yang terdeteksi</option>';
-                showNotification('Tidak ada kamera yang ditemukan', 'warning');
-                return;
-            }
-
-            videoDevices.forEach((device, index) => {
-                const label = device.label || `Kamera ${index + 1}`;
-                cameraSelect.innerHTML += `<option value="${device.deviceId}">${label}</option>`;
-            });
-
-            // Otomatis pilih kamera belakang jika ada
-            const backCamera = videoDevices.find(device => 
-                device.label.toLowerCase().includes('back') || 
-                device.label.toLowerCase().includes('rear') ||
-                device.label.toLowerCase().includes('belakang')
-            );
-            
-            if (backCamera) {
-                cameraSelect.value = backCamera.deviceId;
-                currentCamera = backCamera.deviceId;
-            } else if (videoDevices.length > 0) {
-                cameraSelect.value = videoDevices[0].deviceId;
-                currentCamera = videoDevices[0].deviceId;
-            }
-
-        } catch (error) {
-            console.error('Error loading cameras:', error);
-            showNotification('Tidak dapat mengakses daftar kamera', 'error');
-        }
-    }
-
-    async function mulaiScan() {
-        const cameraSelect = document.getElementById('cameraSelect');
-        const selectedCameraId = cameraSelect.value;
-        
-        if (!selectedCameraId) {
-            showNotification('Pilih kamera terlebih dahulu!', 'warning');
-            return;
-        }
-
-        try {
-            // Tampilkan loading state
-            document.getElementById('startScanBtn').innerHTML = '<div class="loading"></div> Memulai...';
-            document.getElementById('startScanBtn').disabled = true;
-
-            const constraints = {
-                video: {
-                    deviceId: { exact: selectedCameraId },
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    frameRate: { ideal: 30 }
-                }
-            };
-
-            scannerStream = await navigator.mediaDevices.getUserMedia(constraints);
-            
-            const video = document.getElementById('scanner-video');
-            video.srcObject = scannerStream;
-            
-            // Tunggu video siap
-            await new Promise((resolve, reject) => {
-                video.onloadedmetadata = () => resolve();
-                video.onerror = reject;
-                video.play().then(resolve).catch(reject);
-            });
-
-            // Update UI setelah video berhasil dimulai
-            document.getElementById('scannerPlaceholder').classList.add('hidden');
-            document.getElementById('scannerContainer').classList.remove('hidden');
-            
-            document.getElementById('startScanBtn').style.display = 'none';
-            document.getElementById('stopScanBtn').style.display = 'inline-block';
-            document.getElementById('scanResult').classList.add('hidden');
-            
-            scannerActive = true;
-            currentCamera = selectedCameraId;
-            
-            // Mulai scanning loop
-            scanInterval = setInterval(scanQRCode, 200); // Scan setiap 200ms untuk performa lebih baik
-            showNotification('Scanner aktif! Arahkan kamera ke QR code', 'success');
-            
-        } catch (error) {
-            console.error('Error starting scanner:', error);
-            
-            // Reset UI state
-            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-play"></i> Mulai Scan';
-            document.getElementById('startScanBtn').disabled = false;
-            
-            let errorMessage = 'Tidak dapat mengakses kamera';
-            
-            if (error.name === 'NotAllowedError') {
-                errorMessage = 'Izin kamera ditolak. Silakan izinkan akses kamera dan coba lagi.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage = 'Kamera tidak ditemukan. Pastikan kamera terhubung.';
-            } else if (error.name === 'NotSupportedError') {
-                errorMessage = 'Browser tidak mendukung fitur ini.';
-            } else if (error.name === 'NotReadableError') {
-                errorMessage = 'Kamera sedang digunakan aplikasi lain.';
-            } else if (error.name === 'OverconstrainedError') {
-                errorMessage = 'Kamera tidak mendukung resolusi yang diminta.';
-            }
-            
-            showNotification(errorMessage, 'error');
-        }
-    }
-
-    function berhentiScan() {
-        scannerActive = false;
-        
-        // Hentikan scanning loop
-        if (scanInterval) {
-            clearInterval(scanInterval);
-            scanInterval = null;
-        }
-        
-        // Hentikan stream kamera
-        if (scannerStream) {
-            scannerStream.getTracks().forEach(track => {
-                track.stop();
-            });
-            scannerStream = null;
-        }
-        
-        // Reset UI
-        const video = document.getElementById('scanner-video');
-        video.srcObject = null;
-        
-        document.getElementById('scannerPlaceholder').classList.remove('hidden');
-        document.getElementById('scannerContainer').classList.add('hidden');
-        document.getElementById('startScanBtn').style.display = 'inline-block';
-        document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-play"></i> Mulai Scan';
-        document.getElementById('startScanBtn').disabled = false;
-        document.getElementById('stopScanBtn').style.display = 'none';
-        document.getElementById('scanResult').classList.add('hidden');
-        
-        showNotification('Scanner dihentikan', 'info');
-    }
-
-    function scanQRCode() {
-        if (!scannerActive || !scannerStream) return;
-        
-        const video = document.getElementById('scanner-video');
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        
-        // Pastikan video sudah siap dan memiliki dimensi yang valid
-        if (video.videoWidth === 0 || video.videoHeight === 0 || video.readyState !== 4) {
-            return;
-        }
-        
-        // Set canvas size sesuai video dengan optimasi performa
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        
-        try {
-            // Gambar frame video ke canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Dapatkan image data untuk scanning
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            
-            // Scan QR code menggunakan jsQR dengan optimasi
-            const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                inversionAttempts: "dontInvert",
-            });
-            
-            if (code) {
-                console.log('QR Code detected:', code.data);
-                handleScanResult(code.data);
-                
-                // Vibrate jika diaktifkan (untuk mobile)
-                if (appSettings.vibrateOnScan && navigator.vibrate) {
-                    navigator.vibrate(200);
-                }
-            }
-        } catch (error) {
-            console.error('Error during QR scanning:', error);
-        }
-    }
-
-    function handleScanResult(result) {
-        // Hentikan scanner
-        scannerActive = false;
-        if (scanInterval) {
-            clearInterval(scanInterval);
-            scanInterval = null;
-        }
-        
-        // Tampilkan hasil
-        document.getElementById('scanResultContent').textContent = result;
-        document.getElementById('scanResult').classList.remove('hidden');
-        
-        // Scroll ke hasil scan
-        document.getElementById('scanResult').scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'nearest'
-        });
-        
-        showNotification('QR code berhasil dipindai!', 'success');
-    }
-
-    function gunakanHasilScan() {
-        const result = document.getElementById('scanResultContent').textContent;
-        document.getElementById('link').value = result;
-        
-        // Auto-detect content type dengan pattern matching yang lebih baik
-        if (result.startsWith('http://') || result.startsWith('https://')) {
-            document.getElementById('qrType').value = 'url';
-        } else if (result.startsWith('mailto:')) {
-            document.getElementById('qrType').value = 'email';
-            document.getElementById('link').value = result.replace('mailto:', '');
-        } else if (result.startsWith('tel:')) {
-            document.getElementById('qrType').value = 'phone';
-            document.getElementById('link').value = result.replace('tel:', '');
-        } else if (result.startsWith('sms:')) {
-            document.getElementById('qrType').value = 'sms';
-            document.getElementById('link').value = result.replace('sms:', '');
-        } else if (result.startsWith('WIFI:')) {
-            document.getElementById('qrType').value = 'wifi';
-            // Parse WiFi data yang lebih robust
-            const wifiMatch = result.match(/S:([^;]+);T:([^;]+);P:([^;]+);/);
-            if (wifiMatch) {
-                document.getElementById('link').value = wifiMatch[1]; // SSID
-                if (document.getElementById('wifiPassword')) {
-                    document.getElementById('wifiPassword').value = wifiMatch[3]; // Password
-                }
-                if (document.getElementById('wifiEncryption')) {
-                    document.getElementById('wifiEncryption').value = wifiMatch[2]; // Encryption
-                }
-            }
-        } else if (result.startsWith('geo:')) {
-            document.getElementById('qrType').value = 'location';
-            const geoMatch = result.match(/geo:([^,]+),([^?]+)(?:\?q=(.+))?/);
-            if (geoMatch) {
-                document.getElementById('locationLat').value = geoMatch[1];
-                document.getElementById('locationLng').value = geoMatch[2];
-                if (geoMatch[3]) {
-                    document.getElementById('locationLabel').value = decodeURIComponent(geoMatch[3]);
-                }
-            }
-        } else if (result.includes('@') && result.includes('.')) {
-            document.getElementById('qrType').value = 'email';
-        } else if (/^\d+$/.test(result.replace(/[+\-\s]/g, ''))) {
-            document.getElementById('qrType').value = 'phone';
-        } else {
-            document.getElementById('qrType').value = 'text';
-        }
-        
-        ubahTipeQR();
-        bukaTab('customize');
-        showNotification('Hasil scan diterapkan ke form!', 'success');
-    }
-
-    function salinHasilScan() {
-        const result = document.getElementById('scanResultContent').textContent;
-        
-        // Gunakan Clipboard API modern
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(result).then(() => {
-                showNotification('Teks berhasil disalin ke clipboard!', 'success');
-            }).catch(err => {
-                // Fallback untuk browser lama
-                fallbackCopyText(result);
-            });
-        } else {
-            // Fallback untuk browser yang tidak support Clipboard API
-            fallbackCopyText(result);
-        }
-    }
-
-    function fallbackCopyText(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-            if (successful) {
-                showNotification('Teks berhasil disalin!', 'success');
-            } else {
-                showNotification('Gagal menyalin teks', 'error');
-            }
-        } catch (err) {
-            document.body.removeChild(textArea);
-            showNotification('Browser tidak mendukung penyalinan teks', 'error');
-        }
-    }
-
-    function resetScanner() {
-        document.getElementById('scanResult').classList.add('hidden');
-        mulaiScan();
-    }
-
-    function gantiKamera() {
-        const cameraSelect = document.getElementById('cameraSelect');
-        const newCameraId = cameraSelect.value;
-        
-        if (newCameraId && newCameraId !== currentCamera) {
-            if (scannerActive) {
-                berhentiScan();
-                // Tunggu sebentar sebelum mulai lagi dengan kamera baru
-                setTimeout(mulaiScan, 500);
-            }
-            currentCamera = newCameraId;
-        }
-    }
-
-    // Dynamic Fields untuk berbagai tipe QR
-    function ubahTipeQR() {
-        const qrType = document.getElementById('qrType').value;
-        const dynamicFields = document.getElementById('dynamicFields');
-        const linkInput = document.getElementById('link');
-        
-        let placeholder = '';
-        let fieldsHTML = '';
-        
-        switch(qrType) {
-            case 'url':
-                placeholder = 'Masukkan URL website (contoh: https://example.com)';
-                fieldsHTML = '';
-                break;
-                
-            case 'text':
-                placeholder = 'Masukkan teks bebas...';
-                fieldsHTML = '';
-                break;
-                
-            case 'email':
-                placeholder = 'Masukkan alamat email (contoh: email@example.com)';
-                fieldsHTML = `
-                    <div class="input-group">
-                        <input type="text" id="emailSubject" placeholder="Subjek email (opsional)" />
-                        <input type="text" id="emailBody" placeholder="Isi email (opsional)" />
-                    </div>
-                `;
-                break;
-                
-            case 'phone':
-                placeholder = 'Masukkan nomor telepon (contoh: 628123456789)';
-                fieldsHTML = '';
-                break;
-                
-            case 'sms':
-                placeholder = 'Masukkan nomor telepon (contoh: 628123456789)';
-                fieldsHTML = `
-                    <div class="input-group">
-                        <input type="text" id="smsBody" placeholder="Pesan SMS (opsional)" />
-                    </div>
-                `;
-                break;
-                
-            case 'wifi':
-                placeholder = 'Masukkan nama WiFi (SSID)';
-                fieldsHTML = `
-                    <div class="input-group">
-                        <input type="text" id="wifiPassword" placeholder="Password WiFi" />
-                        <select id="wifiEncryption">
-                            <option value="WPA">WPA/WPA2</option>
-                            <option value="WEP">WEP</option>
-                            <option value="nopass">Tidak Ada Password</option>
-                        </select>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
-                        <i class="fas fa-info-circle"></i> QR code akan menyimpan informasi WiFi untuk koneksi cepat
-                    </div>
-                `;
-                break;
-                
-            case 'whatsapp':
-                placeholder = 'Kontak WhatsApp';
-                fieldsHTML = `
-                    <div class="input-group">
-                        <input type="tel" id="whatsappPhone" placeholder="Nomor WhatsApp (contoh: 628123456789)" />
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="whatsappMessage" placeholder="Pesan default (opsional)" />
-                    </div>
-                    <div class="whatsapp-preview">
-                        <i class="fab fa-whatsapp"></i>
-                        <div>QR code akan membuka chat WhatsApp langsung</div>
-                        <div style="font-size: 0.8rem; margin-top: 5px;">Pastikan nomor menggunakan format internasional</div>
-                    </div>
-                `;
-                break;
-                
-            case 'location':
-                placeholder = 'Koordinat lokasi';
-                fieldsHTML = `
-                    <div class="input-group">
-                        <input type="text" id="locationLat" placeholder="Latitude (contoh: -6.2088)" />
-                        <input type="text" id="locationLng" placeholder="Longitude (contoh: 106.8456)" />
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="locationLabel" placeholder="Label lokasi (opsional)" />
-                    </div>
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
-                        <i class="fas fa-info-circle"></i> QR code akan membuka Maps dengan lokasi yang ditentukan
-                    </div>
-                    <button class="btn btn-secondary" onclick="getCurrentLocation()" style="margin-top: 10px;">
-                        <i class="fas fa-location-arrow"></i> Gunakan Lokasi Saat Ini
-                    </button>
-                `;
-                break;
-        }
-        
-        dynamicFields.innerHTML = fieldsHTML;
-        
-        if (qrType !== 'whatsapp') {
-            linkInput.placeholder = placeholder;
-        }
-        
-        // Reset value ketika ganti tipe
-        if (qrType !== 'url' && qrType !== 'text') {
-            linkInput.value = '';
-        }
-    }
-
-    // Fungsi untuk mendapatkan lokasi saat ini
-    function getCurrentLocation() {
-        if (!navigator.geolocation) {
-            showNotification('Browser tidak mendukung geolocation', 'error');
-            return;
-        }
-
-        showNotification('Mendapatkan lokasi...', 'info');
-        
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                document.getElementById('locationLat').value = lat.toFixed(6);
-                document.getElementById('locationLng').value = lng.toFixed(6);
-                
-                // Reverse geocoding sederhana (opsional)
-                getLocationName(lat, lng);
-                
-                showNotification('Lokasi berhasil didapatkan!', 'success');
-            },
-            function(error) {
-                let errorMessage = 'Gagal mendapatkan lokasi';
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        errorMessage = 'Izin lokasi ditolak';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        errorMessage = 'Informasi lokasi tidak tersedia';
-                        break;
-                    case error.TIMEOUT:
-                        errorMessage = 'Timeout mendapatkan lokasi';
-                        break;
-                }
-                showNotification(errorMessage, 'error');
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 60000
-            }
-        );
-    }
-
-    function getLocationName(lat, lng) {
-        // Reverse geocoding sederhana menggunakan Nominatim (OpenStreetMap)
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.display_name) {
-                    document.getElementById('locationLabel').value = data.display_name.split(',')[0];
-                }
-            })
-            .catch(error => {
-                console.error('Error getting location name:', error);
-            });
-    }
-
-    // Logo Management
-    function handleLogoUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        // Validasi ukuran file
-        if (file.size > 5 * 1024 * 1024) {
-            showNotification('Ukuran file terlalu besar! Maksimal 5MB.', 'error');
-            return;
-        }
-
-        // Validasi tipe file
-        if (!file.type.match('image.*')) {
-            showNotification('Silakan upload file gambar (JPG, PNG, GIF)', 'error');
-            return;
-        }
-
-        // Tampilkan loading state
-        const fileUpload = document.querySelector('.file-upload');
-        const originalHTML = fileUpload.innerHTML;
-        fileUpload.innerHTML = '<div class="loading"></div> Mengupload...';
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            currentLogo = e.target.result;
-            showLogoPreview();
-            showNotification('Logo berhasil diupload!', 'success');
-            fileUpload.innerHTML = originalHTML;
-        };
-        
-        reader.onerror = function() {
-            showNotification('Error membaca file', 'error');
-            fileUpload.innerHTML = originalHTML;
-        };
-        
-        reader.readAsDataURL(file);
-    }
-
-    function showLogoPreview() {
-        const previewImage = document.getElementById('previewImage');
-        const logoImage = document.getElementById('logoImage');
-        const logoPlaceholder = document.getElementById('logoPlaceholder');
-        const logoPreview = document.getElementById('logoPreview');
-        const logoControls = document.getElementById('logoControls');
-        const logoContainer = document.getElementById('logoContainer');
-
-        previewImage.src = currentLogo;
-        logoImage.src = currentLogo;
-        logoPreview.classList.remove('hidden');
-        logoControls.classList.remove('hidden');
-        logoImage.classList.remove('hidden');
-        logoPlaceholder.classList.add('hidden');
-        logoContainer.classList.remove('hidden');
-
-        updateLogoPosition();
-    }
-
-    function ubahUkuranLogo() {
-        const sizeSlider = document.getElementById('logoSize');
-        const sizeValue = document.getElementById('logoSizeValue');
-        logoSize = parseInt(sizeSlider.value);
-        sizeValue.textContent = logoSize;
-        updateLogoPosition();
-    }
-
-    function updateLogoPosition() {
-        const logoContainer = document.getElementById('logoContainer');
-        if (logoContainer) {
-            logoContainer.style.width = logoSize + 'px';
-            logoContainer.style.height = logoSize + 'px';
-        }
-    }
-
-    function hapusLogo() {
-        currentLogo = null;
-        document.getElementById('logoUpload').value = '';
-        document.getElementById('logoPreview').classList.add('hidden');
-        document.getElementById('logoControls').classList.add('hidden');
-        document.getElementById('logoContainer').classList.add('hidden');
-        document.getElementById('logoImage').classList.add('hidden');
-        document.getElementById('logoPlaceholder').classList.remove('hidden');
-        showNotification('Logo berhasil dihapus', 'info');
-    }
-
-    // Color Management
-    function ubahWarnaQR() {
-        if (currentQRCode) {
-            buatQR();
-        }
-    }
-
-    function ubahUkuranQR() {
-        const sizeSlider = document.getElementById('qrSizeSlider');
-        const sizeValue = document.getElementById('qrSizeValue');
-        sizeValue.textContent = sizeSlider.value;
-        
-        if (currentQRCode) {
-            buatQR();
-        }
-    }
-
-    function ubahKualitasQR() {
-        if (currentQRCode) {
-            buatQR();
-        }
-        saveSettings();
-    }
-
-    function ubahBorder() {
-        const qrcodeElement = document.getElementById('qrcode');
-        const borderStyle = document.getElementById('borderStyle').value;
-        const borderColor = document.getElementById('borderColor').value;
-        const borderWidth = parseInt(document.getElementById('borderWidth').value);
-        
-        document.getElementById('borderWidthValue').textContent = borderWidth;
-        
-        if (qrcodeElement.children.length > 0) {
-            if (borderStyle === 'none' || borderWidth === 0) {
-                qrcodeElement.style.border = 'none';
-            } else {
-                qrcodeElement.style.border = `${borderWidth}px ${borderStyle} ${borderColor}`;
-            }
-        }
-    }
-
-    function pilihWarnaCepat(warna, bgWarna) {
-        document.getElementById('qrColor').value = warna;
-        document.getElementById('bgColor').value = bgWarna;
-        
-        // Update active state di color palette
-        document.querySelectorAll('.color-option').forEach(opt => {
-            opt.classList.remove('active');
-        });
-        event.target.classList.add('active');
-        
-        if (currentQRCode) {
-            buatQR();
-        }
-    }
-
-    // Template System
-    function applyTemplate(templateName) {
-        switch(templateName) {
-            case 'social':
-                document.getElementById('qrColor').value = '#3b5998';
-                document.getElementById('bgColor').value = '#ffffff';
-                document.getElementById('borderColor').value = '#3b5998';
-                document.getElementById('borderWidth').value = 20;
-                break;
-            case 'business':
-                document.getElementById('qrColor').value = '#2c3e50';
-                document.getElementById('bgColor').value = '#ecf0f1';
-                document.getElementById('borderColor').value = '#2c3e50';
-                document.getElementById('borderWidth').value = 15;
-                break;
-            case 'whatsapp':
-                document.getElementById('qrColor').value = '#25D366';
-                document.getElementById('bgColor').value = '#ffffff';
-                document.getElementById('borderColor').value = '#25D366';
-                document.getElementById('borderWidth').value = 20;
-                document.getElementById('qrType').value = 'whatsapp';
-                ubahTipeQR();
-                break;
-            case 'creative':
-                document.getElementById('qrColor').value = '#9b59b6';
-                document.getElementById('bgColor').value = '#f8f9fa';
-                document.getElementById('borderColor').value = '#9b59b6';
-                document.getElementById('borderWidth').value = 25;
-                break;
-        }
-        
-        ubahBorder();
-        
-        if (currentQRCode) {
-            buatQR();
-        }
-        
-        showNotification(`Template ${templateName} diterapkan!`, 'success');
-    }
-
-    // Download & Share Functions
-    function downloadQR() {
-        if (!currentQRCode) {
-            showNotification('Buat QR Code terlebih dahulu!', 'warning');
-            return;
-        }
-
-        const canvas = document.querySelector('#qrcode canvas');
-        if (!canvas) {
-            showNotification('QR Code belum siap untuk didownload!', 'error');
-            return;
-        }
-
-        try {
-            const finalCanvas = document.createElement('canvas');
-            const ctx = finalCanvas.getContext('2d');
-            const size = 600; // High resolution untuk kualitas terbaik
-            const borderStyle = document.getElementById('borderStyle').value;
-            const borderColor = document.getElementById('borderColor').value;
-            const borderWidth = parseInt(document.getElementById('borderWidth').value);
-            const format = document.getElementById('downloadFormat').value;
-
-            finalCanvas.width = size;
-            finalCanvas.height = size;
-
-            // Draw white background
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, size, size);
-
-            // Draw border jika diaktifkan
-            if (borderStyle !== 'none' && borderWidth > 0) {
-                ctx.fillStyle = borderColor;
-                ctx.fillRect(0, 0, size, size);
-                
-                // Draw inner white background
-                const innerSize = size - (borderWidth * 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(borderWidth, borderWidth, innerSize, innerSize);
-            }
-
-            // Calculate QR code position and size
-            const padding = 40; // Additional padding
-            const qrSize = size - (borderWidth * 2) - (padding * 2);
-            const qrX = borderWidth + padding;
-            const qrY = borderWidth + padding;
-
-            // Draw QR code dengan smoothing
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(canvas, qrX, qrY, qrSize, qrSize);
-
-            // Draw logo jika ada
-            if (currentLogo) {
-                const logoImg = new Image();
-                logoImg.onload = function() {
-                    const logoSizeFinal = logoSize * (qrSize / 250); // Scale logo berdasarkan ukuran QR
-                    const logoX = size / 2 - logoSizeFinal / 2;
-                    const logoY = size / 2 - logoSizeFinal / 2;
-                    
-                    // Draw white background untuk logo
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(logoX - 6, logoY - 6, logoSizeFinal + 12, logoSizeFinal + 12);
-                    
-                    // Draw logo dengan rounded corners
-                    ctx.save();
-                    const cornerRadius = 8 * (logoSizeFinal / 60);
-                    ctx.beginPath();
-                    ctx.roundRect(logoX, logoY, logoSizeFinal, logoSizeFinal, cornerRadius);
-                    ctx.clip();
-                    ctx.drawImage(logoImg, logoX, logoY, logoSizeFinal, logoSizeFinal);
-                    ctx.restore();
-                    
-                    doDownload(finalCanvas, format);
-                };
-                logoImg.onerror = function() {
-                    // Jika error load logo, download tanpa logo
-                    console.error('Error loading logo image');
-                    doDownload(finalCanvas, format);
-                };
-                logoImg.src = currentLogo;
-            } else {
-                doDownload(finalCanvas, format);
-            }
-        } catch (error) {
-            console.error('Error downloading QR code:', error);
-            showNotification('Terjadi error saat mendownload QR code: ' + error.message, 'error');
-        }
-    }
-
-    function doDownload(canvas, format) {
-        const link = document.createElement('a');
-        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-        
-        let mimeType, extension;
-        switch(format) {
-            case 'jpg':
-                mimeType = 'image/jpeg';
-                extension = 'jpg';
-                // Untuk JPG, kita perlu mengganti background transparan dengan putih
-                const jpgCanvas = document.createElement('canvas');
-                jpgCanvas.width = canvas.width;
-                jpgCanvas.height = canvas.height;
-                const jpgCtx = jpgCanvas.getContext('2d');
-                jpgCtx.fillStyle = '#ffffff';
-                jpgCtx.fillRect(0, 0, jpgCanvas.width, jpgCanvas.height);
-                jpgCtx.drawImage(canvas, 0, 0);
-                canvas = jpgCanvas;
-                break;
-            case 'svg':
-                // SVG implementation would require different approach
-                // For now, fallback to PNG
-                mimeType = 'image/png';
-                extension = 'png';
-                break;
-            default:
-                mimeType = 'image/png';
-                extension = 'png';
-        }
-        
-        link.download = `qrcode-${timestamp}.${extension}`;
-        link.href = canvas.toDataURL(mimeType, 1.0); // Maximum quality
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        showNotification(`QR Code berhasil didownload sebagai ${extension.toUpperCase()}!`, 'success');
-    }
-
-    function shareQR() {
-        if (!currentQRCode) {
-            showNotification('Buat QR Code terlebih dahulu!', 'warning');
-            return;
-        }
-
-        const canvas = document.querySelector('#qrcode canvas');
-        if (!canvas) return;
-
-        // Untuk Web Share API
-        if (navigator.share) {
-            canvas.toBlob(function(blob) {
-                const file = new File([blob], 'qrcode.png', { type: 'image/png' });
-                
-                navigator.share({
-                    title: 'QR Code Saya',
-                    text: 'Saya membuat QR code menggunakan QR Code Generator & Scanner',
-                    files: [file]
-                }).then(() => {
-                    showNotification('QR Code berhasil dibagikan!', 'success');
-                }).catch(error => {
-                    if (error.name !== 'AbortError') {
-                        showNotification('Berbagi dibatalkan atau tidak didukung', 'info');
-                    }
-                });
-            });
-        } else {
-            // Fallback: download saja
-            showNotification('Web Share API tidak didukung di browser ini. Mengunduh QR Code...', 'info');
-            downloadQR();
-        }
-    }
-
-    // History Management
-    function simpanKeHistory() {
-        if (!currentQRCode) return;
-
-        const qrType = document.getElementById('qrType').value;
-        let content = '';
-        let additionalData = {};
-        
-        if (qrType === 'whatsapp') {
-            const phone = document.getElementById('whatsappPhone').value;
-            const message = document.getElementById('whatsappMessage').value;
-            content = `WhatsApp: ${phone}`;
-            additionalData = { phone, message };
-        } else if (qrType === 'location') {
-            const lat = document.getElementById('locationLat').value;
-            const lng = document.getElementById('locationLng').value;
-            const label = document.getElementById('locationLabel').value;
-            content = `Lokasi: ${lat}, ${lng}`;
-            additionalData = { lat, lng, label };
-        } else if (qrType === 'wifi') {
-            const ssid = document.getElementById('link').value;
-            const password = document.getElementById('wifiPassword')?.value;
-            const encryption = document.getElementById('wifiEncryption')?.value;
-            content = `WiFi: ${ssid}`;
-            additionalData = { ssid, password, encryption };
-        } else {
-            content = document.getElementById('link').value;
-        }
-        
-        const historyItem = {
-            id: Date.now(),
-            content: content,
-            type: qrType,
-            timestamp: new Date().toLocaleString('id-ID'),
-            colors: {
-                qr: document.getElementById('qrColor').value,
-                bg: document.getElementById('bgColor').value
-            },
-            additionalData: additionalData,
-            qrSize: parseInt(document.getElementById('qrSizeSlider').value)
-        };
-
-        // Cek duplikat
-        const isDuplicate = qrHistory.some(item => 
-            item.content === historyItem.content && 
-            item.type === historyItem.type
-        );
-
-        if (!isDuplicate) {
-            qrHistory.unshift(historyItem);
-            // Batasi riwayat hingga 50 item
-            if (qrHistory.length > 50) {
-                qrHistory = qrHistory.slice(0, 50);
-            }
-            
-            localStorage.setItem('qrHistory', JSON.stringify(qrHistory));
-            loadHistory();
-            showNotification('QR Code disimpan ke riwayat!', 'success');
-        } else {
-            showNotification('QR Code sudah ada dalam riwayat', 'info');
-        }
-    }
-
-    function loadHistory() {
-        const historyList = document.getElementById('historyList');
-        
-        if (qrHistory.length === 0) {
-            historyList.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px; color: #666;">
-                    <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                    <div>Belum ada riwayat QR Code</div>
-                    <div style="font-size: 0.85rem; margin-top: 8px;">QR Code yang Anda buat akan muncul di sini</div>
-                </div>
-            `;
-            return;
-        }
-
-        historyList.innerHTML = qrHistory.map(item => `
-            <div class="history-item" onclick="loadFromHistory('${item.id}')">
-                <div class="history-info">
-                    <div class="history-url">${item.content}</div>
-                    <div class="history-date">
-                        ${item.timestamp} • ${item.type}
-                        ${item.qrSize ? ` • ${item.qrSize}px` : ''}
-                    </div>
-                </div>
-                <i class="fas fa-chevron-right" style="color: #ccc;"></i>
-            </div>
-        `).join('');
-    }
-
-    function loadFromHistory(id) {
-        const item = qrHistory.find(i => i.id == id);
-        if (!item) return;
-
-        // Load data berdasarkan tipe
-        if (item.type === 'whatsapp') {
-            document.getElementById('qrType').value = 'whatsapp';
-            ubahTipeQR();
-            document.getElementById('whatsappPhone').value = item.additionalData.phone || '';
-            document.getElementById('whatsappMessage').value = item.additionalData.message || '';
-        } else if (item.type === 'location') {
-            document.getElementById('qrType').value = 'location';
-            ubahTipeQR();
-            document.getElementById('locationLat').value = item.additionalData.lat || '';
-            document.getElementById('locationLng').value = item.additionalData.lng || '';
-            document.getElementById('locationLabel').value = item.additionalData.label || '';
-        } else if (item.type === 'wifi') {
-            document.getElementById('qrType').value = 'wifi';
-            ubahTipeQR();
-            document.getElementById('link').value = item.additionalData.ssid || '';
-            if (document.getElementById('wifiPassword')) {
-                document.getElementById('wifiPassword').value = item.additionalData.password || '';
-            }
-            if (document.getElementById('wifiEncryption')) {
-                document.getElementById('wifiEncryption').value = item.additionalData.encryption || 'WPA';
-            }
-        } else {
-            document.getElementById('link').value = item.content;
-            document.getElementById('qrType').value = item.type;
-        }
-        
-        // Load pengaturan visual
-        document.getElementById('qrColor').value = item.colors.qr || '#000000';
-        document.getElementById('bgColor').value = item.colors.bg || '#ffffff';
-        if (item.qrSize) {
-            document.getElementById('qrSizeSlider').value = item.qrSize;
-            document.getElementById('qrSizeValue').textContent = item.qrSize;
-        }
-
-        ubahTipeQR();
-        buatQR();
-        bukaTab('customize');
-        showNotification('Riwayat QR Code dimuat!', 'success');
-    }
-
-    function clearHistory() {
-        if (qrHistory.length === 0) {
-            showNotification('Tidak ada riwayat untuk dihapus', 'info');
-            return;
-        }
-
-        if (confirm('Apakah Anda yakin ingin menghapus semua riwayat? Tindakan ini tidak dapat dibatalkan.')) {
-            qrHistory = [];
-            localStorage.setItem('qrHistory', JSON.stringify(qrHistory));
-            loadHistory();
-            showNotification('Semua riwayat berhasil dihapus!', 'success');
-        }
-    }
-
-    function exportHistory() {
-        if (qrHistory.length === 0) {
-            showNotification('Tidak ada riwayat untuk diexport', 'warning');
-            return;
-        }
-
-        const dataStr = JSON.stringify(qrHistory, null, 2);
-        const dataBlob = new Blob([dataStr], {type: 'application/json'});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(dataBlob);
-        link.download = `qr-history-${new Date().toISOString().slice(0, 10)}.json`;
-        link.click();
-        showNotification('Riwayat berhasil diexport!', 'success');
-    }
-
-    // Tab Management
-    function bukaTab(tabName) {
-        // Update active tab
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.querySelector(`[onclick="bukaTab('${tabName}')"]`).classList.add('active');
-
-        // Update active content
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        document.getElementById(tabName).classList.add('active');
-
-        // Tab-specific actions
-        if (tabName === 'scanner') {
-            loadCameras();
-        } else if (tabName !== 'scanner' && scannerActive) {
-            berhentiScan();
-        }
-        
-        // Scroll to top of tab content
-        document.getElementById(tabName).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function bukaScanner() {
-        bukaTab('scanner');
-    }
-
-    // Utility Functions
-    function resetQR() {
-        if (!currentQRCode) {
-            showNotification('Tidak ada QR Code untuk direset', 'info');
-            return;
-        }
-
-        document.getElementById('qrcode').innerHTML = '';
-        document.getElementById('downloadBtn').style.display = 'none';
-        document.getElementById('shareBtn').style.display = 'none';
-        document.getElementById('saveBtn').style.display = 'none';
-        document.getElementById('resetBtn').style.display = 'none';
-        showNotification('QR Code telah direset', 'info');
-    }
-
-    function resetSettings() {
-        if (confirm('Reset semua pengaturan ke nilai default?')) {
-            appSettings = {
-                autoSave: true,
-                vibrateOnScan: true,
-                qrQuality: 'Q',
-                downloadFormat: 'png'
-            };
-            localStorage.setItem('qrAppSettings', JSON.stringify(appSettings));
-            loadSettings();
-            showNotification('Pengaturan berhasil direset!', 'success');
-        }
-    }
-
-    function backupData() {
-        const backupData = {
-            settings: appSettings,
-            history: qrHistory,
-            timestamp: new Date().toISOString(),
-            version: '2.0'
-        };
-        
-        const dataStr = JSON.stringify(backupData, null, 2);
-        const dataBlob = new Blob([dataStr], {type: 'application/json'});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(dataBlob);
-        link.download = `qr-backup-${new Date().toISOString().slice(0, 10)}.json`;
-        link.click();
-        showNotification('Data berhasil dibackup!', 'success');
-    }
-
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    function checkPermissions() {
-        // Check camera permissions
-        if (navigator.permissions && navigator.permissions.query) {
-            navigator.permissions.query({name: 'camera'}).then(permissionStatus => {
-                if (permissionStatus.state === 'denied') {
-                    showNotification('Izin kamera ditolak. Scanner tidak dapat digunakan.', 'warning');
-                }
-            });
-        }
-    }
-
-    // Enhanced notification system
-    function showNotification(message, type = 'info') {
-        const toastContainer = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        const icons = {
-            success: 'fas fa-check-circle',
-            error: 'fas fa-exclamation-triangle',
-            warning: 'fas fa-exclamation-circle',
-            info: 'fas fa-info-circle'
-        };
-
-        toast.innerHTML = `
-            <i class="${icons[type]}"></i>
-            <span>${message}</span>
-        `;
-        
-        toastContainer.appendChild(toast);
-        
-        // Trigger animation
-        setTimeout(() => toast.classList.add('show'), 100);
-        
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 5000);
-    }
-
-    // Drag and Drop untuk logo
-    function setupDragAndDrop() {
-        const dropArea = document.querySelector('.file-upload');
-        
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false);
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false);
-        });
-        
-        function highlight() {
-            dropArea.style.borderColor = 'var(--primary)';
-            dropArea.style.background = '#f0f2ff';
-            dropArea.style.transform = 'scale(1.02)';
-        }
-        
-        function unhighlight() {
-            dropArea.style.borderColor = '#dee2e6';
-            dropArea.style.background = '#f8f9fa';
-            dropArea.style.transform = 'scale(1)';
-        }
-        
-        dropArea.addEventListener('drop', handleDrop, false);
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            const fileUpload = document.getElementById('logoUpload');
-            fileUpload.files = files;
-            handleLogoUpload({ target: fileUpload });
-        }
-    }
-
-    // WhatsApp preview
-    function showWhatsAppPreview() {
-        const phone = document.getElementById('whatsappPhone').value.trim();
-        const message = document.getElementById('whatsappMessage').value.trim();
-        
-        if (phone) {
-            const formattedPhone = formatPhoneNumber(phone);
-            if (formattedPhone) {
-                let previewText = `https://wa.me/${formattedPhone}`;
-                if (message) {
-                    previewText += `?text=${encodeURIComponent(message)}`;
-                }
-                document.getElementById('link').value = previewText;
-            }
-        }
-    }
-
-    // Initialize FAB as hidden
-    document.querySelector('.fab').style.display = 'none';
-
-    // Service Worker Registration (for PWA capabilities)
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-                console.log('ServiceWorker registration failed: ', err);
-            });
-        });
-    }
-
-    // Online/Offline detection
-    window.addEventListener('online', function() {
-        showNotification('Koneksi internet tersedia', 'success');
+    document.getElementById('autoSave').addEventListener('change', function() {
+      localStorage.setItem('autoSave', this.checked);
     });
 
-    window.addEventListener('offline', function() {
-        showNotification('Anda sedang offline', 'warning');
-    });
+    const savedAutoSave = localStorage.getItem('autoSave');
+    if (savedAutoSave !== null) {
+      document.getElementById('autoSave').checked = savedAutoSave === 'true';
+    }
 
-    // Error boundary untuk catch semua error
-    window.addEventListener('error', function(e) {
-        console.error('Global error:', e.error);
-        showNotification('Terjadi error dalam aplikasi', 'error');
-    });
-
-    // Page visibility handling
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            // Page is hidden, pause expensive operations
-            if (scanInterval) {
-                clearInterval(scanInterval);
-                scanInterval = null;
-            }
-        } else {
-            // Page is visible, resume operations if needed
-            if (scannerActive && !scanInterval) {
-                scanInterval = setInterval(scanQRCode, 200);
-            }
-        }
-    });
-
-    console.log('QR Code Generator & Scanner v2.0 initialized successfully!');
-
+    console.log('QR Code Generator v2.0 Ready! 🚀');
   </script>
 </body>
 </html>
