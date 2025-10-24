@@ -964,7 +964,7 @@
         const message = document.getElementById('whatsappMessage').value.trim();
         
         if (!phone) {
-          alert('Silakan masukkan nomor WhatsApp!, Gunakan Format 628+Nomor Kamu');
+          alert('Silakan masukkan nomor WhatsApp!');
           return;
         }
         
@@ -1116,7 +1116,7 @@
           placeholder = 'Kontak WhatsApp';
           dynamicFields.innerHTML = `
             <div class="input-group">
-              <input type="tel" id="whatsappPhone" placeholder="Nomor WhatsApp (contoh: 628123456789)" />
+              <input type="tel" id="whatsappPhone" placeholder="(Contoh 6281234567890)" />
             </div>
             <div class="input-group">
               <textarea id="whatsappMessage" placeholder="Pesan default (opsional)"></textarea>
@@ -1744,4 +1744,5 @@
   </script>
 </body>
   </html>
+
 
